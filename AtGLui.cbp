@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="AtGLui" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/AtGLui-d" imp_lib="bin/lib$(TARGET_OUTPUT_BASENAME)" def_file="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME)" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option createStaticLib="1" />
+				<Compiler>
+					<Add option="-Wall" />
+					<Add option="-g" />
+					<Add option="-DBUILD_DLL" />
+				</Compiler>
+				<Linker>
+					<Add option="-lAtGfx-d" />
+					<Add option="-lAtPhys-d" />
+					<Add option="-lAtTools-d" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/AtGLui" imp_lib="lib/lib$(TARGET_OUTPUT_BASENAME)" def_file="$(TARGET_OUTPUT_DIR)$(TARGET_OUTPUT_BASENAME)" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="3" />
+				<Option compiler="gcc" />
+				<Option createStaticLib="1" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add option="-Wall" />
+					<Add option="-DBUILD_DLL" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add option="-lAtGfx" />
+					<Add option="-lAtPhys" />
+					<Add option="-lAtTools" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-std=c++11" />
+			<Add directory="../external/include" />
+			<Add directory="../" />
+		</Compiler>
+		<Linker>
+			<Add option="-lAtXml" />
+			<Add option="-llua52" />
+			<Add option="-lopengl32" />
+			<Add option="-lSDL2" />
+			<Add directory="../external/lib" />
+			<Add directory="../AtXml/bin" />
+			<Add directory="../AtTools/bin" />
+			<Add directory="../AtGfx/bin" />
+			<Add directory="../AtPhys/bin" />
+		</Linker>
+		<Unit filename="API.cpp" />
+		<Unit filename="API.h" />
+		<Unit filename="Bind.cpp" />
+		<Unit filename="Bind.h" />
+		<Unit filename="Button.cpp" />
+		<Unit filename="Button.h" />
+		<Unit filename="Dialog.cpp" />
+		<Unit filename="Dialog.h" />
+		<Unit filename="Element.cpp" />
+		<Unit filename="Element.h" />
+		<Unit filename="Frame.cpp" />
+		<Unit filename="Frame.h" />
+		<Unit filename="List.cpp" />
+		<Unit filename="List.h" />
+		<Unit filename="Message.cpp" />
+		<Unit filename="Message.h" />
+		<Unit filename="Paragraph.cpp" />
+		<Unit filename="Paragraph.h" />
+		<Unit filename="Slider.cpp" />
+		<Unit filename="Slider.h" />
+		<Unit filename="State.cpp" />
+		<Unit filename="State.h" />
+		<Unit filename="StatusBar.cpp" />
+		<Unit filename="StatusBar.h" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+			<envvars />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
