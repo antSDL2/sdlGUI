@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="AtGLuiEditor" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="assets/AtGLuiEditor-d" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="assets/" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-Wall" />
+					<Add option="-g" />
+					<Add option="-DDEBUG" />
+				</Compiler>
+				<Linker>
+					<Add option="-lAtGLui-d" />
+					<Add option="-lAtApp-d" />
+					<Add option="-lAtGfx-d" />
+					<Add option="-lAtPhys-d" />
+					<Add option="-lAtTools-d" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="assets/AtGLuiEditor" prefix_auto="1" extension_auto="1" />
+				<Option working_dir="assets/" />
+				<Option object_output="obj/Release/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O3" />
+					<Add option="-Wall" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+					<Add option="-lAtGLui" />
+					<Add option="-lAtApp" />
+					<Add option="-lAtGfx" />
+					<Add option="-lAtPhys" />
+					<Add option="-lAtTools" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-std=c++11" />
+			<Add directory="../external/include" />
+			<Add directory="../" />
+		</Compiler>
+		<Linker>
+			<Add option="-lAtXml" />
+			<Add option="-llua52" />
+			<Add option="-lopengl32" />
+			<Add option="-lmingw32" />
+			<Add option="-lSDL2main" />
+			<Add option="-lSDL2" />
+			<Add directory="../external/lib" />
+			<Add directory="../external/bin" />
+			<Add directory="../AtApp/bin" />
+			<Add directory="../AtGfx/bin" />
+			<Add directory="../AtPhys/bin" />
+			<Add directory="../AtTools/bin" />
+			<Add directory="bin" />
+			<Add directory="../AtXml/bin" />
+		</Linker>
+		<Unit filename="Main.cpp" />
+		<Unit filename="Resources.rc">
+			<Option compilerVar="WINDRES" />
+		</Unit>
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
