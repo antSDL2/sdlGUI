@@ -22,7 +22,6 @@ namespace AtGLui {
         protected:
             Element *Parent;
             bool Container, ClipContents, CopyInput, Disabled, ShareInput;
-            AtObjects::Renderable Renderable;
             AtObjects::Vector2 Margin, Padding;
         //Access Methods
         public:
@@ -33,7 +32,6 @@ namespace AtGLui {
             bool ClipsContents();
             bool CopiesInput();
             Element *GetParent();
-            AtObjects::Renderable *GetRenderable();
             float GetMarginX();
             float GetMarginY();
             bool IsContainer();
@@ -49,7 +47,6 @@ namespace AtGLui {
             void AddPadding(float X, float Y);
             void OffsetChildren(int Axis, float Position);
             void Render(float Interpolation);
-            void RenderShape(float Interpolation, int DebugState);
             void SetContainer(bool Container);
             void SetClipContents(bool ClipContents);
             void SetCopyInput(bool CopyInput);
@@ -58,11 +55,8 @@ namespace AtGLui {
             void SetParent(Element *Parent);
             void SetShareInput(bool ShareInput);
         protected:
-            void OnAnimationChange();
             void OnMouseIn();
             void OnMouseOut();
-            void OnProcess();
-            void OnTextureChange();
             void UpdateClipping();
     };
 }

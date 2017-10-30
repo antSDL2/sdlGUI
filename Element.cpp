@@ -1,7 +1,6 @@
 //Element.cpp
 #include "Element.h"
 #include <iostream>
-#include <AtObjects/Renderer.h>
 #include <math.h>
 
 namespace AtGLui {
@@ -35,10 +34,6 @@ namespace AtGLui {
 
     Element *Element::GetParent() {
         return Parent;
-    }
-
-    AtObjects::Renderable *Element::GetRenderable() {
-        return &Renderable;
     }
 
     float Element::GetMarginX() {
@@ -111,9 +106,6 @@ namespace AtGLui {
         }
     }
 
-    void Element::OnAnimationChange() {
-    }
-
     void Element::OnMouseIn() {
         if (!Disabled) {
             if (Renderable.GetTile() == 1) Renderable.SetTile(2);
@@ -128,24 +120,6 @@ namespace AtGLui {
 
             if (!IsHovered()) Renderable.SetColor(AtObjects::Color::Idle);
         }
-    }
-
-    void Element::OnProcess() {
-        //EventHandler
-        int Event = Renderable.HandleEvents();
-        switch(Event) {
-            case AtObjects::Events::AnimationChange:
-                OnAnimationChange();
-                break;
-            case AtObjects::Events::TextureChange:
-                OnTextureChange();
-                break;
-            default:
-                break;
-        }
-    }
-
-    void Element::OnTextureChange() {
     }
 
     float Element::PaddingX() {
@@ -170,64 +144,6 @@ namespace AtGLui {
             Renderable.RenderAsTexture(TargetX, TargetY, Width(), Height(), ClipSize.X(), ClipSize.Y(), ClipPosition.X(), ClipPosition.Y());
             Scaled = false;
         }
-    }
-
-    void Element::RenderShape(float Interpolation, int DebugState) {
-        //if (Name == "FramesPerSecondMessage") std::cout << Focus << std::endl;
-
-        //if (IsShown(true)) {
-            float R, G, B, A;
-
-            if (DebugState == 1) {
-                R = 1.0f;
-                G = 0.2f;
-                B = 0.3f;
-                A = 1.0f;
-            } else if (DebugState == 2) {
-                R = 0.2f;
-                G = 1.0f;
-                B = 0.3f;
-                A = 1.0f;
-            } else if (DebugState == 3) {
-                R = 1.0f;
-                G = 1.0f;
-                B = 0.3f;
-                A = 1.0f;
-            } else {
-                R = 0.2f;
-                G = 0.3f;
-                B = 1.0f;
-                A = 1.0f;
-            }
-
-            if (IsHovered() || DebugState) {
-                if (IsClicked(SDL_BUTTON_LEFT) || IsClicked(SDL_BUTTON_RIGHT)) {
-                    AtObjects::Renderer::SetColor(R, G, B, A);
-                } else {
-                    AtObjects::Renderer::SetColor(R*0.75f, G*0.75f, B*0.75f, A);
-                }
-            }
-
-            if (IsHovered() || DebugState) {
-                Scaled = true;
-                int Shape = Interactable.Shape;
-                if (Shape == AtObjects::Shapes::Rectangle) {
-                    float TargetX = X(Interpolation, Reference::Origin);
-                    float TargetY = Y(Interpolation, Reference::Origin);
-                    AtObjects::Renderer::RenderRectangle(TargetX, TargetY, Width(), Height(), false);
-
-                    AtObjects::Renderer::RenderRectangle(TargetX, TargetY, 4, 4, true);
-                    AtObjects::Renderer::RenderRectangle(TargetX+Width()-4, TargetY, 4, 4, true);
-                    AtObjects::Renderer::RenderRectangle(TargetX+Width()-4, TargetY+Height()-4, 4, 4, true);
-                    AtObjects::Renderer::RenderRectangle(TargetX, TargetY+Height()-4, 4, 4, true);
-                } else if (Shape == AtObjects::Shapes::Disk) {
-                    float TargetCenterX = X(Reference::Origin, Position::Center, 1)+InterpolateX(Interpolation);
-                    float TargetCenterY = Y(Reference::Origin, Position::Center, 1)+InterpolateY(Interpolation);
-                    AtObjects::Renderer::RenderDisk(TargetCenterX, TargetCenterY, Width()/2.f, Height()/2.f, false);
-                }
-                Scaled = false;
-            }
-        //}
     }
 
     void Element::SetContainer(bool Container) {
