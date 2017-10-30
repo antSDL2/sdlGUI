@@ -34,7 +34,7 @@ namespace AtGLui {
         Frame *Frame = Frames.GetFirst();
         while (Frame) {
             if (Frame->GetName() == Frame->GetIndex()) {
-                AtTools::Lua::ExecuteScript(Lua, Frame->GetIndex() + ":OnExit()");
+                if (!Frame->IsEmbedded()) AtTools::Lua::ExecuteScript(Lua, Frame->GetIndex() + ":OnExit()");
                 AtTools::Lua::ExecuteScript(Lua, Frame->GetIndex() + " = nil");
             }
 
@@ -812,14 +812,15 @@ namespace AtGLui {
     void State::Load(std::string StateName, Element *Parent, bool Embedded) {
         std::string Location = StateIndex[StateName];
 
-        AddOnRequirements[StateName] = true;
-
         if (Embedded) {
+            /* Added in case addon is already loaded, to delete */
             if (Frames[StateName+"."+StateName]) {
                 Remove(Frames[StateName+"."+StateName]);
                 std::cout << "\tRemoved: " << StateName << std::endl;
             }
         }
+
+        AddOnRequirements[StateName] = true;
 
         if (!Frames[StateName+"."+StateName] || Embedded) {
             AtXml::File File;
@@ -1013,7 +1014,9 @@ namespace AtGLui {
                                         Frame *Frame = NULL;
                                         Frame = MakeObject(Frames, AddOn, Name, Parent);
                                         if (Frame) {
-                                            AtTools::Lua::ExecuteScript(Lua, Name + " = Frame.New('" + AddOn + "." + Name + "')");
+                                            if (Embedded) {
+                                                Frame->SetEmbedded(true);
+                                            } else AtTools::Lua::ExecuteScript(Lua, Name + " = Frame.New('" + AddOn + "." + Name + "')");
                                             LoadElement(Frame, Tag);
                                             if (Trigger == AtXml::Trigger::Open) Parent = Frame;
                                         }
@@ -1622,25 +1625,27 @@ namespace AtGLui {
 
     void State::MakeElement(int ListID, std::string AddOn, std::string Name, Element *Parent) {
         Element *Element = NULL;
+
+        Frame *AddOnFrame = Frames[AddOn+"."+AddOn];
         switch (ListID) {
             case Lists::Binds:
                 Element = MakeObject(Binds, AddOn, Name, Parent);
-                if (Element) AtTools::Lua::ExecuteScript(Lua, AddOn + "." + Name + " = Bind.New(\"" + AddOn + "." + Name + "\")");
+                if (Element && AddOnFrame && !AddOnFrame->IsEmbedded()) AtTools::Lua::ExecuteScript(Lua, AddOn + "." + Name + " = Bind.New(\"" + AddOn + "." + Name + "\")");
                 break;
             case Lists::Buttons:
                 Element = MakeObject(Buttons, AddOn, Name, Parent);
-                if (Element) AtTools::Lua::ExecuteScript(Lua, AddOn + "." + Name + " = Button.New(\"" + AddOn + "." + Name + "\")");
+                if (Element && AddOnFrame && !AddOnFrame->IsEmbedded()) AtTools::Lua::ExecuteScript(Lua, AddOn + "." + Name + " = Button.New(\"" + AddOn + "." + Name + "\")");
                 break;
             case Lists::Dialogs:
                 Element = MakeObject(Dialogs, AddOn, Name, Parent);
-                if (Element) AtTools::Lua::ExecuteScript(Lua, AddOn + "." + Name + " = Dialog.New(\"" + AddOn + "." + Name + "\")");
+                if (Element && AddOnFrame && !AddOnFrame->IsEmbedded()) AtTools::Lua::ExecuteScript(Lua, AddOn + "." + Name + " = Dialog.New(\"" + AddOn + "." + Name + "\")");
                 break;
             case Lists::Frames:
                 {
                     Frame *Frame = MakeObject(Frames, AddOn, Name, Parent);
                     if (Frame) {
                         Element = Frame;
-                        AtTools::Lua::ExecuteScript(Lua, AddOn + "." + Name + " = Frame.New(\"" + AddOn + "." + Name + "\")");
+                        if (AddOnFrame && !AddOnFrame->IsEmbedded()) AtTools::Lua::ExecuteScript(Lua, AddOn + "." + Name + " = Frame.New(\"" + AddOn + "." + Name + "\")");
 
                         //Point to a Message
                         if (Parent && Messages[Parent]) {
@@ -1659,7 +1664,7 @@ namespace AtGLui {
                     List *List = MakeObject(Lists, AddOn, Name, Parent);
                     if (List) {
                         Element = List;
-                        AtTools::Lua::ExecuteScript(Lua, AddOn + "." + Name + " = List.New(\"" + AddOn + "." + Name + "\")");
+                        if (AddOnFrame && !AddOnFrame->IsEmbedded()) AtTools::Lua::ExecuteScript(Lua, AddOn + "." + Name + " = List.New(\"" + AddOn + "." + Name + "\")");
 
                         //Point to a Button
                         if (Parent && Buttons[Parent]) {
@@ -1683,7 +1688,7 @@ namespace AtGLui {
                     Message *Message = MakeObject(Messages, AddOn, Name, Parent);
                     if (Message) {
                         Element = Message;
-                        AtTools::Lua::ExecuteScript(Lua, AddOn + "." + Name + " = Message.New(\"" + AddOn + "." + Name + "\")");
+                        if (AddOnFrame && !AddOnFrame->IsEmbedded()) AtTools::Lua::ExecuteScript(Lua, AddOn + "." + Name + " = Message.New(\"" + AddOn + "." + Name + "\")");
 
                         //Point to a DropDownButton
                         if (Parent && Buttons[Parent]) {
@@ -1697,15 +1702,15 @@ namespace AtGLui {
                 break;
             case Lists::Paragraphs:
                 Element = MakeObject(Paragraphs, AddOn, Name, Parent);
-                if (Element) AtTools::Lua::ExecuteScript(Lua, AddOn + "." + Name + " = Paragraph.New(\"" + AddOn + "." + Name + "\")");
+                if (Element && AddOnFrame && !AddOnFrame->IsEmbedded()) AtTools::Lua::ExecuteScript(Lua, AddOn + "." + Name + " = Paragraph.New(\"" + AddOn + "." + Name + "\")");
                 break;
             case Lists::Sliders:
                 Element = MakeObject(Sliders, AddOn, Name, Parent);
-                AtTools::Lua::ExecuteScript(Lua, AddOn + "." + Name + " = Slider.New(\"" + AddOn + "." + Name + "\")");
+                if (Element && AddOnFrame && !AddOnFrame->IsEmbedded()) AtTools::Lua::ExecuteScript(Lua, AddOn + "." + Name + " = Slider.New(\"" + AddOn + "." + Name + "\")");
                 break;
             case Lists::StatusBars:
                 Element = MakeObject(StatusBars, AddOn, Name, Parent);
-                if (Element) AtTools::Lua::ExecuteScript(Lua, AddOn + "." + Name + " = StatusBar.New(\"" + AddOn + "." + Name + "\")");
+                if (Element && AddOnFrame && !AddOnFrame->IsEmbedded()) AtTools::Lua::ExecuteScript(Lua, AddOn + "." + Name + " = StatusBar.New(\"" + AddOn + "." + Name + "\")");
                 break;
             default:
                 std::cerr << "(Interface/State.cpp) MakeElement(): Supplied invalid List ID during element creation: " << ListID << std::endl;
@@ -1793,17 +1798,20 @@ namespace AtGLui {
             std::string Index = Element->GetIndex();
             std::string Name = Element->GetName();
 
-            if (Function == "OnProcess") {
-                if (Index == Name) {
-                    AtTools::Lua::ExecuteScript(Lua, Index + ":" + Function + "()");
+            Frame *Frame = Frames[Index+"."+Index];
+            if (Frame && !Frame->IsEmbedded()) {
+                if (Function == "OnProcess") {
+                    if (Index == Name) {
+                        AtTools::Lua::ExecuteScript(Lua, Index + ":" + Function + "()");
+                    } else {
+                        AtTools::Lua::ExecuteScript(Lua, ID + ":" + Function + "()");
+                    }
                 } else {
-                    AtTools::Lua::ExecuteScript(Lua, ID + ":" + Function + "()");
-                }
-            } else {
-                if (Index == Name) {
-                    Scripts.push_back(Index + ":" + Function + "()");
-                } else {
-                    Scripts.push_back(ID + ":" + Function + "()");
+                    if (Index == Name) {
+                        Scripts.push_back(Index + ":" + Function + "()");
+                    } else {
+                        Scripts.push_back(ID + ":" + Function + "()");
+                    }
                 }
             }
         }

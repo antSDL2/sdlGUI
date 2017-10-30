@@ -9,15 +9,17 @@ namespace AtGLui {
         public:
             Frame *Next, *Previous;
         protected:
-            bool AllowDebug;
+            bool AllowDebug, Embedded;
         //Access Methods
         public:
             Frame();
             ~Frame();
             bool AllowsDebug();
+            bool IsEmbedded();
         //Process Methods
         public:
             void SetAllowDebug(bool State);
+            void SetEmbedded(bool State);
     };
 }
 
