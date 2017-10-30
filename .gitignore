@@ -4,4 +4,7 @@
 *.res
 bin/
 lib/
+assets/User/AddOnData/
+assets/User/Screenshots/
+assets/User/Logs/
 *.exe
