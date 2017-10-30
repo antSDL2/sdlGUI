@@ -4,10 +4,10 @@
 
 #include "State.h"
 #include <AtTools/AtTools.h>
-#include <AtPhys/API.h>
+#include <AtObjects/API.h>
 
 namespace AtGLui {
-    class API: protected AtPhys::API<State, Element> {
+    class API: protected AtObjects::API<State, Element> {
         //Members
         protected:
             static const luaL_Reg InterfaceMethods[], ElementMethods[];
@@ -139,7 +139,7 @@ namespace AtGLui {
                 int CursorX = 0;
 
                 if (ObjectManager) {
-                    AtPhys::Vector2 Cursor = ObjectManager->GetCursorPosition();
+                    AtObjects::Vector2 Cursor = ObjectManager->GetCursorPosition();
                     CursorX = Cursor.X();
                 }
 
@@ -153,7 +153,7 @@ namespace AtGLui {
                 int CursorY = 0;
 
                 if (ObjectManager) {
-                    AtPhys::Vector2 Cursor = ObjectManager->GetCursorPosition();
+                    AtObjects::Vector2 Cursor = ObjectManager->GetCursorPosition();
                     CursorY = Cursor.Y();
                 }
 
@@ -656,7 +656,7 @@ namespace AtGLui {
                 int Results = 0;
 
                 if (ObjectManager) {
-                    AtGfx::TextureManager *TextureManager = ObjectManager->GetTextureManager();
+                    AtObjects::TextureManager *TextureManager = ObjectManager->GetTextureManager();
                     TextureManager->ReleaseTextures();
                 }
 
@@ -855,7 +855,7 @@ namespace AtGLui {
                 if (Arguments == 1) {
                     Element *Object = GetObject<Element>(Lua);
                     if (Object) {
-                        AtGfx::Renderable *Renderable = Object->GetRenderable();
+                        AtObjects::Renderable *Renderable = Object->GetRenderable();
                         Texture = Renderable->GetTextureID();
                     }
                 } else std::cerr << "(Interface/API.h) ElementGetTexture(): Function called with invalid number of arguments (" << Arguments << ")." << std::endl;
@@ -1044,7 +1044,7 @@ namespace AtGLui {
 
                     Element *Object = GetObject<Element>(Lua);
                     if (Object) {
-                        AtGfx::Renderable *Renderable = Object->GetRenderable();
+                        AtObjects::Renderable *Renderable = Object->GetRenderable();
                         Renderable->SetIdleColor(Color);
                     }
                 } else std::cerr << "(Interface/API.h) ElementSetColor(): Function called with invalid number of arguments (" << Arguments << ")." << std::endl;
@@ -1188,7 +1188,7 @@ namespace AtGLui {
 
                         Element *Object = GetObject<Element>(Lua);
                         if (Object) {
-                            AtGfx::Renderable *Renderable = Object->GetRenderable();
+                            AtObjects::Renderable *Renderable = Object->GetRenderable();
                             Renderable->SetTransparency(Transparency);
                         }
                     } else std::cerr << "(Interface/API.h) ElementSetTransparency(): Function called with invalid number of arguments (" << Arguments << ")." << std::endl;

@@ -3,9 +3,9 @@
 #define NEOGUI_STATE_H
 
 #include <Lua/lua.hpp>
-#include <AtGfx/TextureManager.h>
+#include <AtObjects/TextureManager.h>
 #include <AtTools/AtTools.h>
-#include <AtPhys/ObjectManager.h>
+#include <AtObjects/ObjectManager.h>
 #include <AtXml/AtXml.h>
 #include "Bind.h"
 #include "Button.h"
@@ -34,26 +34,26 @@ namespace AtGLui {
         static const int DebugFocusChanged  = 1000;
     }
 
-    class State: public AtPhys::ObjectManager<Element> {
+    class State: public AtObjects::ObjectManager<Element> {
         //Members
         protected:
             bool ScaleMode;
             std::map<std::string, bool> AddOnRequirements;
             std::map< std::string, std::vector<std::string> > FontIndex;
             std::map< std::string, std::string > StateIndex;
-            AtTools::List<std::string, Bind, Element> Binds;
-            AtTools::List<std::string, Button, Element> Buttons;
-            AtTools::List<std::string, Dialog, Element> Dialogs;
-            AtTools::List<std::string, Frame, Element> Frames;
-            AtTools::List<std::string, List, Element> Lists;
-            AtTools::List<std::string, Message, Element> Messages;
-            AtTools::List<std::string, Paragraph, Element> Paragraphs;
-            AtTools::List<std::string, Slider, Element> Sliders;
-            AtTools::List<std::string, StatusBar, Element> StatusBars;
+            AtObjects::List<std::string, Bind, Element> Binds;
+            AtObjects::List<std::string, Button, Element> Buttons;
+            AtObjects::List<std::string, Dialog, Element> Dialogs;
+            AtObjects::List<std::string, Frame, Element> Frames;
+            AtObjects::List<std::string, List, Element> Lists;
+            AtObjects::List<std::string, Message, Element> Messages;
+            AtObjects::List<std::string, Paragraph, Element> Paragraphs;
+            AtObjects::List<std::string, Slider, Element> Sliders;
+            AtObjects::List<std::string, StatusBar, Element> StatusBars;
             Element *Focus;
             Frame Interface;
-            AtGfx::TextureManager TextureManager;
-            AtPhys::Vector2 CursorPosition;
+            AtObjects::TextureManager TextureManager;
+            AtObjects::Vector2 CursorPosition;
             SDL_Cursor *Cursor;
         //Access Methods
         public:
@@ -61,9 +61,9 @@ namespace AtGLui {
             ~State();
             template <class Type> void Get(Type *&Object, std::string ID);
             std::string GetElementClass(std::string ID);
-            AtPhys::Vector2 &GetCursorPosition();
+            AtObjects::Vector2 &GetCursorPosition();
             Element *GetFocus(bool State = false);
-            AtGfx::TextureManager *GetTextureManager();
+            AtObjects::TextureManager *GetTextureManager();
             bool IsShown();
         //Process Methods
         public:
@@ -99,9 +99,9 @@ namespace AtGLui {
             void GetSharedAttributes(AtXml::Tag &Tag, Element *Element);
             void GetSpecificAttributes(AtXml::Tag &Tag, std::vector<std::string> &Data);
             void HandleEvents();
-            template <class IDType, class Type, class InheritedType> void HandleListEvents(AtTools::List<IDType, Type, InheritedType> &List);
+            template <class IDType, class Type, class InheritedType> void HandleListEvents(AtObjects::List<IDType, Type, InheritedType> &List);
             int InputFocus(SDL_Event &Event);
-            template <class IDType, class Type, class InheritedType> int InputList(AtTools::List<IDType, Type, InheritedType> &List, SDL_Event &Event, InheritedType *Parent = NULL);
+            template <class IDType, class Type, class InheritedType> int InputList(AtObjects::List<IDType, Type, InheritedType> &List, SDL_Event &Event, InheritedType *Parent = NULL);
             int InputRelatedTo(Element *Parent, SDL_Event &Event);
             void Load(std::string Name, Element *Parent = NULL, bool Embedded = false);
             void LoadElement(Element *Element, AtXml::Tag &Tag);
@@ -109,13 +109,13 @@ namespace AtGLui {
             void LoadStateIndex(std::string Path);
             void LoadTextureIndex(std::string Path);
             void MakeElement(int List, std::string AddOn, std::string Name, Element *Parent = NULL);
-            template <class IDType, class Type, class InheritedType> void ProcessList(AtTools::List<IDType, Type, InheritedType> &List, InheritedType *Parent = NULL);
+            template <class IDType, class Type, class InheritedType> void ProcessList(AtObjects::List<IDType, Type, InheritedType> &List, InheritedType *Parent = NULL);
             void ProcessRelatedTo(Element *Parent);
             void PushElementCallback(Element *Element, std::string Function);
             void ReloadMessageTextures();
             bool Remove(Element *Target);
             void RemoveRelatedTo(Element *Parent);
-            template <class IDType, class Type, class InheritedType> void RenderList(float Interpolation, AtTools::List<IDType, Type, InheritedType> &List, InheritedType *Parent = NULL);
+            template <class IDType, class Type, class InheritedType> void RenderList(float Interpolation, AtObjects::List<IDType, Type, InheritedType> &List, InheritedType *Parent = NULL);
             void RenderRelatedTo(Element *Parent, float Interpolation);
             void ResetAllExcept(int List, Element *Parent = NULL);
             void ResetRelatedTo(Element *Parent);

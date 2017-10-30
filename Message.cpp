@@ -3,7 +3,7 @@
 #include <iostream>
 #include <sstream>
 #include <stdlib.h>
-#include <AtGfx/Renderer.h>
+#include <AtObjects/Renderer.h>
 
 namespace AtGLui {
     void Message::Add(char C) {
@@ -92,7 +92,7 @@ namespace AtGLui {
         if (Focused&&Editable) {
             if (Event.type == SDL_TEXTINPUT) {
                 Add(*Event.text.text);
-                EventQueue.push_back(AtPhys::Events::ValueChange);
+                EventQueue.push_back(AtObjects::Events::ValueChange);
                 Input = 501;
             } else if (Event.type == SDL_KEYDOWN) {
                 HoldKey(Event.key.keysym.scancode);
@@ -108,7 +108,7 @@ namespace AtGLui {
                         Erase();
                     }
 
-                    EventQueue.push_back(AtPhys::Events::ValueChange);
+                    EventQueue.push_back(AtObjects::Events::ValueChange);
 
                     Input = 502;
                 } else if (Event.key.keysym.scancode == SDL_SCANCODE_LEFT) {
@@ -137,7 +137,7 @@ namespace AtGLui {
                         Erase(1);
                     }
 
-                    EventQueue.push_back(AtPhys::Events::ValueChange);
+                    EventQueue.push_back(AtObjects::Events::ValueChange);
 
                     Input = 505;
                 }
@@ -163,7 +163,7 @@ namespace AtGLui {
             if (Cursor->IsShown()) {
                 std::string String = Value.substr(Value.length()+CursorPosition, abs(CursorPosition));
                 int Width = 0, Height = 0;
-                AtGfx::Renderer::GetStringSize(GetFont(), GetSize(), String, Width, Height);
+                AtObjects::Renderer::GetStringSize(GetFont(), GetSize(), String, Width, Height);
                 Cursor->Offset(Axis::X, -Width);
             }
 
@@ -219,12 +219,12 @@ namespace AtGLui {
             float TargetWidth = Width();
             float TargetHeight = Height();
 
-            AtGfx::Texture *Texture = Renderable.GetTexture();
+            AtObjects::Texture *Texture = Renderable.GetTexture();
 
             //TEMP ? PERFORMANCE CONCERN
             if (ShadowColor[0] > -1) {
-                AtGfx::Renderer::SetColor(ShadowColor[0], ShadowColor[1], ShadowColor[2], 255);
-                AtGfx::Renderer::RenderTexture(Texture, TargetX+ShadowOffset.X(), TargetY+ShadowOffset.Y(), TargetWidth, TargetHeight, 0, ClipSize.X(), ClipSize.Y(), ClipPosition.X(), ClipPosition.Y()); //Tile?
+                AtObjects::Renderer::SetColor(ShadowColor[0], ShadowColor[1], ShadowColor[2], 255);
+                AtObjects::Renderer::RenderTexture(Texture, TargetX+ShadowOffset.X(), TargetY+ShadowOffset.Y(), TargetWidth, TargetHeight, 0, ClipSize.X(), ClipSize.Y(), ClipPosition.X(), ClipPosition.Y()); //Tile?
             }
 
             Renderable.RenderAsTexture(TargetX, TargetY, TargetWidth, TargetHeight, ClipSize.X(), ClipSize.Y(), ClipPosition.X(), ClipPosition.Y());
@@ -275,7 +275,7 @@ namespace AtGLui {
     }
 
     void Message::SetShadowOffset(float X, float Y) {
-        ShadowOffset = AtPhys::Vector2(X, Y);
+        ShadowOffset = AtObjects::Vector2(X, Y);
 
         if (ShadowColor[0] == -1) {
             ShadowColor[0] = ShadowColor[1] = ShadowColor[2] = 0;
@@ -292,7 +292,7 @@ namespace AtGLui {
 
     void Message::SetText(std::string Text) {
         if (Text != Value) {
-            EventQueue.push_back(AtPhys::Events::ValueChange);
+            EventQueue.push_back(AtObjects::Events::ValueChange);
         }
 
         Value = Text;
@@ -300,7 +300,7 @@ namespace AtGLui {
         Scaled = true;
 
         int Width = 0, Height = 0;
-        AtGfx::Renderer::GetStringSize(Font, GetSize(), Text, Width, Height);
+        AtObjects::Renderer::GetStringSize(Font, GetSize(), Text, Width, Height);
         ResizeTo((float)Width/Scale.X(), (float)Height/Scale.Y());
 
         Scaled = false;

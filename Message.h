@@ -13,7 +13,7 @@ namespace AtGLui {
             bool Editable, Focused;
             Frame *Cursor;
             int CharacterLimit, CursorPosition, CursorTimer, Repeat, RepeatTimer, ShadowColor[3], Size, Styles;
-            AtPhys::Vector2 ShadowOffset;
+            AtObjects::Vector2 ShadowOffset;
             std::string Font;
         //Access Methods
         public:

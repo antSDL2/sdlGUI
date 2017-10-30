@@ -46,10 +46,10 @@ namespace AtGLui {
 
                     if (Status < 0) {
                         Status = 0;
-                        DragReference = AtPhys::Vector2(Cursor->Width()/2.f, DragReference.Y());
+                        DragReference = AtObjects::Vector2(Cursor->Width()/2.f, DragReference.Y());
                     } else if (Status > 1) {
                         Status = 1;
-                        DragReference = AtPhys::Vector2(Width()-Cursor->Width()/2.f, DragReference.Y());
+                        DragReference = AtObjects::Vector2(Width()-Cursor->Width()/2.f, DragReference.Y());
                     }
 
                     Cursor->DropAt((DragReference.X()-Cursor->Width()/2.f)/Scale.X(), 0);
@@ -58,10 +58,10 @@ namespace AtGLui {
 
                     if (Status < 0) {
                         Status = 0;
-                        DragReference = AtPhys::Vector2(DragReference.X(), Cursor->Height()/2.f);
+                        DragReference = AtObjects::Vector2(DragReference.X(), Cursor->Height()/2.f);
                     } else if (Status > 1) {
                         Status = 1;
-                        DragReference = AtPhys::Vector2(DragReference.X(), Height()-Cursor->Height()/2.f);
+                        DragReference = AtObjects::Vector2(DragReference.X(), Height()-Cursor->Height()/2.f);
                     }
 
                     Cursor->DropAt(0, (DragReference.Y()-Cursor->Height()/2.f)/Scale.Y());
@@ -83,7 +83,7 @@ namespace AtGLui {
         if (Type == Sliders::Drag) {
             if (Parent) {
                 if (Orientation == Orientation::Horizontal) {
-                    if (Scale == AtPhys::Vector2(1.f, 1.f)) Parent->EnableScaling(true);
+                    if (Scale == AtObjects::Vector2(1.f, 1.f)) Parent->EnableScaling(true);
 
                     float FrameSize = MaximumValue-Width();
                     Parent->OffsetChildren(Axis::X, -Status*FrameSize);
@@ -100,9 +100,9 @@ namespace AtGLui {
                         } else Shown = true;
                     }
 
-                    if (Scale == AtPhys::Vector2(1.f, 1.f)) Parent->EnableScaling(false);
+                    if (Scale == AtObjects::Vector2(1.f, 1.f)) Parent->EnableScaling(false);
                 } else if (Orientation == Orientation::Vertical) {
-                    if (Scale == AtPhys::Vector2(1.f, 1.f)) Parent->EnableScaling(true);
+                    if (Scale == AtObjects::Vector2(1.f, 1.f)) Parent->EnableScaling(true);
 
                     float FrameSize = MaximumValue-Height();
                     Parent->OffsetChildren(Axis::Y, -Status*FrameSize);
@@ -121,7 +121,7 @@ namespace AtGLui {
                         } else Shown = true;
                     }
 
-                    if (Scale == AtPhys::Vector2(1.f, 1.f)) Parent->EnableScaling(false);
+                    if (Scale == AtObjects::Vector2(1.f, 1.f)) Parent->EnableScaling(false);
                 }
             }
         }
@@ -145,14 +145,14 @@ namespace AtGLui {
 
     void Slider::SetStatus(float Status) {
         this->Status = Status;
-        EventQueue.push_back(AtPhys::Events::ValueChange);
+        EventQueue.push_back(AtObjects::Events::ValueChange);
     }
 
     void Slider::SetSliderValue(float Value) {
         if (MaximumValue != MinimumValue) {
             Status = (Value-MinimumValue)/(MaximumValue-MinimumValue);
             if (Status > 1) Status = 1; else if (Status < 0) Status = 0;
-            EventQueue.push_back(AtPhys::Events::ValueChange);
+            EventQueue.push_back(AtObjects::Events::ValueChange);
         }
     }
 

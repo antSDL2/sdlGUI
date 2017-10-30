@@ -1,6 +1,6 @@
 //Dialog.cpp
 #include "Dialog.h"
-#include <AtGfx/Renderer.h>
+#include <AtObjects/Renderer.h>
 #include <iostream>
 #include <math.h>
 
@@ -8,7 +8,7 @@ namespace AtGLui {
     Dialog::Dialog() {
         Next = Previous = NULL;
         CopyInput = true; Focused = false;
-        AutoSize = AtPhys::Vector2(true, true);
+        AutoSize = AtObjects::Vector2(true, true);
     }
 
     int Dialog::OnInput(SDL_Event &Event) {

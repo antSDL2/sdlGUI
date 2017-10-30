@@ -20,8 +20,7 @@
 				<Linker>
 					<Add option="-lAtGLui-d" />
 					<Add option="-lAtApp-d" />
-					<Add option="-lAtGfx-d" />
-					<Add option="-lAtPhys-d" />
+					<Add option="-lAtObjects-d" />
 					<Add option="-lAtTools-d" />
 				</Linker>
 			</Target>
@@ -39,8 +38,7 @@
 					<Add option="-s" />
 					<Add option="-lAtGLui" />
 					<Add option="-lAtApp" />
-					<Add option="-lAtGfx" />
-					<Add option="-lAtPhys" />
+					<Add option="-lAtObjects" />
 					<Add option="-lAtTools" />
 				</Linker>
 			</Target>
@@ -60,8 +58,7 @@
 			<Add directory="../external/lib" />
 			<Add directory="../external/bin" />
 			<Add directory="../AtApp/bin" />
-			<Add directory="../AtGfx/bin" />
-			<Add directory="../AtPhys/bin" />
+			<Add directory="../AtObjects/bin" />
 			<Add directory="../AtTools/bin" />
 			<Add directory="bin" />
 			<Add directory="../AtXml/bin" />

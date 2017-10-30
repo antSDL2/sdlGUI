@@ -31,7 +31,7 @@ namespace AtGLui {
         if (!Disabled) {
             if (Type == Buttons::Standard) {
                 Renderable.SetTile(3);
-                ChildrenOffset = AtPhys::Vector2(1, 1);
+                ChildrenOffset = AtObjects::Vector2(1, 1);
             } else if (Type == Buttons::DropDown) {
                 Renderable.SetTile(3);
             }
@@ -42,7 +42,7 @@ namespace AtGLui {
         if (!Disabled) {
             if (Type == Buttons::Standard) {
                 if (Hovered) Renderable.SetTile(2); else Renderable.SetTile(1);
-                ChildrenOffset = AtPhys::Vector2(0, 0);
+                ChildrenOffset = AtObjects::Vector2(0, 0);
             } else if (Type == Buttons::DropDown) {
                 if (Hovered) Renderable.SetTile(2); else Renderable.SetTile(1);
                 if (DisplayList) DisplayList->Toggle();
@@ -62,7 +62,7 @@ namespace AtGLui {
                 if (Checked) Renderable.SetTile(4); else Renderable.SetTile(2);
             }
 
-            if (IsHovered()) Renderable.SetColor(AtGfx::Color::Hovered);
+            if (IsHovered()) Renderable.SetColor(AtObjects::Color::Hovered);
         }
     }
 
@@ -70,14 +70,14 @@ namespace AtGLui {
         if (!Disabled) {
             if (Type == Buttons::Standard) {
                 Renderable.SetTile(1);
-                ChildrenOffset = AtPhys::Vector2(0, 0);
+                ChildrenOffset = AtObjects::Vector2(0, 0);
             } else if (Type == Buttons::DropDown) {
                 Renderable.SetTile(1);
             } else if (Type == Buttons::Checkbox) {
                 if (Checked) Renderable.SetTile(3); else Renderable.SetTile(1);
             }
 
-            if (!IsHovered()) Renderable.SetColor(AtGfx::Color::Idle);
+            if (!IsHovered()) Renderable.SetColor(AtObjects::Color::Idle);
         }
     }
 

@@ -1,12 +1,12 @@
 //Element.cpp
 #include "Element.h"
 #include <iostream>
-#include <AtGfx/Renderer.h>
+#include <AtObjects/Renderer.h>
 #include <math.h>
 
 namespace AtGLui {
     void Element::AddPadding(float X, float Y) {
-        Padding = AtPhys::Vector2(X, Y);
+        Padding = AtObjects::Vector2(X, Y);
     }
 
     float Element::ChildrenOffsetX() {
@@ -37,7 +37,7 @@ namespace AtGLui {
         return Parent;
     }
 
-    AtGfx::Renderable *Element::GetRenderable() {
+    AtObjects::Renderable *Element::GetRenderable() {
         return &Renderable;
     }
 
@@ -61,7 +61,7 @@ namespace AtGLui {
             if (InheritedHeight) InheritedHeight -= OffsetY+2.f*Parent->PaddingY();
             if (Scaled) Parent->EnableScaling(false);
         } else {
-            AtGfx::Texture *Texture = Renderable.GetTexture();
+            AtObjects::Texture *Texture = Renderable.GetTexture();
             if (Texture) {
                 InheritedHeight = Scale*Texture->GetHeight();
             }
@@ -82,7 +82,7 @@ namespace AtGLui {
             if (InheritedWidth) InheritedWidth -= OffsetX+2.f*Parent->PaddingX();
             if (Scaled) Parent->EnableScaling(false);
         } else {
-            AtGfx::Texture *Texture = Renderable.GetTexture();
+            AtObjects::Texture *Texture = Renderable.GetTexture();
             if (Texture) {
                 InheritedWidth = Scale*Texture->GetWidth();
             }
@@ -105,9 +105,9 @@ namespace AtGLui {
 
     void Element::OffsetChildren(int Axis, float Position) {
         if (Axis == Axis::X) {
-            ChildrenOffset = AtPhys::Vector2(Position-Padding.X(), ChildrenOffset.Y());
+            ChildrenOffset = AtObjects::Vector2(Position-Padding.X(), ChildrenOffset.Y());
         } else if (Axis == Axis::Y) {
-            ChildrenOffset = AtPhys::Vector2(ChildrenOffset.X(), Position-Padding.Y());
+            ChildrenOffset = AtObjects::Vector2(ChildrenOffset.X(), Position-Padding.Y());
         }
     }
 
@@ -118,7 +118,7 @@ namespace AtGLui {
         if (!Disabled) {
             if (Renderable.GetTile() == 1) Renderable.SetTile(2);
 
-            if (IsHovered()) Renderable.SetColor(AtGfx::Color::Hovered);
+            if (IsHovered()) Renderable.SetColor(AtObjects::Color::Hovered);
         }
     }
 
@@ -126,7 +126,7 @@ namespace AtGLui {
         if (!Disabled) {
             if (Renderable.GetTile() != 1) Renderable.SetTile(1);
 
-            if (!IsHovered()) Renderable.SetColor(AtGfx::Color::Idle);
+            if (!IsHovered()) Renderable.SetColor(AtObjects::Color::Idle);
         }
     }
 
@@ -134,10 +134,10 @@ namespace AtGLui {
         //EventHandler
         int Event = Renderable.HandleEvents();
         switch(Event) {
-            case AtGfx::Events::AnimationChange:
+            case AtObjects::Events::AnimationChange:
                 OnAnimationChange();
                 break;
-            case AtGfx::Events::TextureChange:
+            case AtObjects::Events::TextureChange:
                 OnTextureChange();
                 break;
             default:
@@ -202,28 +202,28 @@ namespace AtGLui {
 
             if (IsHovered() || DebugState) {
                 if (IsClicked(SDL_BUTTON_LEFT) || IsClicked(SDL_BUTTON_RIGHT)) {
-                    AtGfx::Renderer::SetColor(R, G, B, A);
+                    AtObjects::Renderer::SetColor(R, G, B, A);
                 } else {
-                    AtGfx::Renderer::SetColor(R*0.75f, G*0.75f, B*0.75f, A);
+                    AtObjects::Renderer::SetColor(R*0.75f, G*0.75f, B*0.75f, A);
                 }
             }
 
             if (IsHovered() || DebugState) {
                 Scaled = true;
                 int Shape = Interactable.Shape;
-                if (Shape == AtPhys::Shapes::Rectangle) {
+                if (Shape == AtObjects::Shapes::Rectangle) {
                     float TargetX = X(Interpolation, Reference::Origin);
                     float TargetY = Y(Interpolation, Reference::Origin);
-                    AtGfx::Renderer::RenderRectangle(TargetX, TargetY, Width(), Height(), false);
+                    AtObjects::Renderer::RenderRectangle(TargetX, TargetY, Width(), Height(), false);
 
-                    AtGfx::Renderer::RenderRectangle(TargetX, TargetY, 4, 4, true);
-                    AtGfx::Renderer::RenderRectangle(TargetX+Width()-4, TargetY, 4, 4, true);
-                    AtGfx::Renderer::RenderRectangle(TargetX+Width()-4, TargetY+Height()-4, 4, 4, true);
-                    AtGfx::Renderer::RenderRectangle(TargetX, TargetY+Height()-4, 4, 4, true);
-                } else if (Shape == AtPhys::Shapes::Disk) {
+                    AtObjects::Renderer::RenderRectangle(TargetX, TargetY, 4, 4, true);
+                    AtObjects::Renderer::RenderRectangle(TargetX+Width()-4, TargetY, 4, 4, true);
+                    AtObjects::Renderer::RenderRectangle(TargetX+Width()-4, TargetY+Height()-4, 4, 4, true);
+                    AtObjects::Renderer::RenderRectangle(TargetX, TargetY+Height()-4, 4, 4, true);
+                } else if (Shape == AtObjects::Shapes::Disk) {
                     float TargetCenterX = X(Reference::Origin, Position::Center, 1)+InterpolateX(Interpolation);
                     float TargetCenterY = Y(Reference::Origin, Position::Center, 1)+InterpolateY(Interpolation);
-                    AtGfx::Renderer::RenderDisk(TargetCenterX, TargetCenterY, Width()/2.f, Height()/2.f, false);
+                    AtObjects::Renderer::RenderDisk(TargetCenterX, TargetCenterY, Width()/2.f, Height()/2.f, false);
                 }
                 Scaled = false;
             }
@@ -246,10 +246,10 @@ namespace AtGLui {
         if (Disabled && !this->Disabled) {
             ResetInput();
             Renderable.SetTile(4);
-            Renderable.SetColor(AtGfx::Color::Disabled);
+            Renderable.SetColor(AtObjects::Color::Disabled);
         } else if (!Disabled && this->Disabled) {
             Renderable.SetTile(1);
-            Renderable.SetColor(AtGfx::Color::Idle);
+            Renderable.SetColor(AtObjects::Color::Idle);
         }
 
         this->Disabled = Disabled;
@@ -257,7 +257,7 @@ namespace AtGLui {
     }
 
     void Element::SetMargin(int X, int Y) {
-        Margin = AtPhys::Vector2(X, Y);
+        Margin = AtObjects::Vector2(X, Y);
     }
 
     void Element::SetParent(Element *Parent) {
@@ -273,7 +273,7 @@ namespace AtGLui {
         //TEMP Performance concern?
         if (Parent) {
             if (Parent->ClipsContents()) {
-                if (Scale == AtPhys::Vector2(1.f, 1.f)) Parent->EnableScaling(true);
+                if (Scale == AtObjects::Vector2(1.f, 1.f)) Parent->EnableScaling(true);
 
                 float LocalX = X(Reference::Parent)+Parent->ChildrenOffsetX(), LocalY = Y(Reference::Parent)+Parent->ChildrenOffsetY();
                 float Width = this->Width(), Height = this->Height();
@@ -285,10 +285,10 @@ namespace AtGLui {
                 float ClipX = -LocalX/Width;
                 float ClipY = -LocalY/Height;
 
-                ClipSize = AtPhys::Vector2(ClipWidth, ClipHeight);
-                ClipPosition = AtPhys::Vector2(ClipX, ClipY);
+                ClipSize = AtObjects::Vector2(ClipWidth, ClipHeight);
+                ClipPosition = AtObjects::Vector2(ClipX, ClipY);
 
-                if (Scale == AtPhys::Vector2(1.f, 1.f)) Parent->EnableScaling(false);
+                if (Scale == AtObjects::Vector2(1.f, 1.f)) Parent->EnableScaling(false);
                 //if (Name == "Testy") std::cout << ClipY << " " << LocalY << " " << Height << " " << AutoSize.Y() << std::endl;
             } else if (Parent->IsClipped()) {
                 float LocalX = X(Reference::Parent), LocalY = Y(Reference::Parent);
@@ -304,9 +304,9 @@ namespace AtGLui {
                 float ClipWidth = (ParentClipWidth*ParentWidth-LocalX)/Width;
                 float ClipHeight = (ParentClipHeight*ParentHeight-LocalY)/Height;
 
-                ClipPosition = AtPhys::Vector2(ClipX, ClipY);
-                ClipSize = AtPhys::Vector2(ClipWidth, ClipHeight);
-            } else {ClipPosition = AtPhys::Vector2(0.f, 0.f); ClipSize = AtPhys::Vector2(1.f, 1.f);  }
+                ClipPosition = AtObjects::Vector2(ClipX, ClipY);
+                ClipSize = AtObjects::Vector2(ClipWidth, ClipHeight);
+            } else {ClipPosition = AtObjects::Vector2(0.f, 0.f); ClipSize = AtObjects::Vector2(1.f, 1.f);  }
         }
     }
 

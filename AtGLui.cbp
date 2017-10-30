@@ -18,8 +18,7 @@
 					<Add option="-DBUILD_DLL" />
 				</Compiler>
 				<Linker>
-					<Add option="-lAtGfx-d" />
-					<Add option="-lAtPhys-d" />
+					<Add option="-lAtObjects-d" />
 					<Add option="-lAtTools-d" />
 				</Linker>
 			</Target>
@@ -36,8 +35,7 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add option="-lAtGfx" />
-					<Add option="-lAtPhys" />
+					<Add option="-lAtObjects" />
 					<Add option="-lAtTools" />
 				</Linker>
 			</Target>
@@ -55,8 +53,7 @@
 			<Add directory="../external/lib" />
 			<Add directory="../AtXml/bin" />
 			<Add directory="../AtTools/bin" />
-			<Add directory="../AtGfx/bin" />
-			<Add directory="../AtPhys/bin" />
+			<Add directory="../AtObjects/bin" />
 		</Linker>
 		<Unit filename="API.cpp" />
 		<Unit filename="API.h" />

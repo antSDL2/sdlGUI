@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_workspace_file>
 	<Workspace title="AtGLui Editor">
-		<Project filename="../AtPhys/AtPhys.cbp" />
-		<Project filename="../AtGfx/AtGfx.cbp" />
+		<Project filename="../AtObjects/AtObjects.cbp" />
 		<Project filename="../AtApp/AtApp.cbp" />
 		<Project filename="AtGLui.cbp" />
 		<Project filename="AtGLuiEditor.cbp" />

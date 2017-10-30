@@ -11,7 +11,7 @@ namespace AtGLui {
         protected:
             bool Editable;
             int ShadowColor[3], Size, Styles;
-            AtPhys::Vector2 ShadowOffset;
+            AtObjects::Vector2 ShadowOffset;
             std::string Font;
         //Access Methods
         public:
@@ -19,7 +19,7 @@ namespace AtGLui {
             ~Paragraph();
             std::string GetFont();
             int *GetShadowColor();
-            AtPhys::Vector2 GetShadowOffset();
+            AtObjects::Vector2 GetShadowOffset();
             int GetSize();
             int GetStyles();
             bool IsEditable();

@@ -20,7 +20,7 @@ namespace AtGLui {
             Element *SelectedItem;
             Message *DisplayMessage;
             int ItemLimit, Items, Type;
-            AtPhys::Vector2 Item;
+            AtObjects::Vector2 Item;
             std::list<Element*> ListItems;
             std::string Orientation;
         //Access Methods
@@ -28,7 +28,7 @@ namespace AtGLui {
             List();
             ~List();
             Message *GetDisplayMessage();
-            AtPhys::Vector2 GetItemSize();
+            AtObjects::Vector2 GetItemSize();
             int GetType();
             int GetItemLimit();
             int GetItems();

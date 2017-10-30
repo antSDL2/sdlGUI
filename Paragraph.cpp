@@ -10,7 +10,7 @@ namespace AtGLui {
         return ShadowColor;
     }
 
-    AtPhys::Vector2 Paragraph::GetShadowOffset() {
+    AtObjects::Vector2 Paragraph::GetShadowOffset() {
         return ShadowOffset;
     }
 
@@ -49,7 +49,7 @@ namespace AtGLui {
     }
 
     void Paragraph::SetShadowOffset(float X, float Y) {
-        ShadowOffset = AtPhys::Vector2(X, Y);
+        ShadowOffset = AtObjects::Vector2(X, Y);
 
         if (ShadowColor[0] == -1) {
             ShadowColor[0] = ShadowColor[1] = ShadowColor[2] = 0;

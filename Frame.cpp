@@ -10,7 +10,7 @@ namespace AtGLui {
     Frame::Frame() {
         Next = Previous = NULL;
         AllowDebug = true; Interactable.EnableInteraction(false);
-        AutoSize = AtPhys::Vector2(true, true);
+        AutoSize = AtObjects::Vector2(true, true);
     }
 
     void Frame::SetAllowDebug(bool State) {

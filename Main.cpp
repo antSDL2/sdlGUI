@@ -5,7 +5,7 @@
 #include <AtApp/API.h>
 #include <AtApp/State.h>
 
-#include <AtGfx/Functions.h>
+#include <AtObjects/Renderer.h>
 
 #include "API.h"
 #include "State.h"
@@ -43,7 +43,7 @@ int main (int argc, char *argv[]) {
 
     if (Application.Start(SDL_INIT_VIDEO|SDL_INIT_JOYSTICK)) {
         std::cout << "Started Application in " << Application.GetWidth() << "x" << Application.GetHeight() << "." << std::endl;
-        AtGfx::Who();
+        AtObjects::Renderer::Who();
     }
 
 
@@ -59,7 +59,7 @@ int main (int argc, char *argv[]) {
     Interface.LoadState("AtGUIEditor");
 
     //Main Loop
-    AtPhys::Vector2 &Cursor = Interface.GetCursorPosition();
+    AtObjects::Vector2 &Cursor = Interface.GetCursorPosition();
     do {
         //Input
         SDL_Event UserEvent;
@@ -69,7 +69,7 @@ int main (int argc, char *argv[]) {
         while (SDL_PollEvent(&Event)) {
             bool CanInput = false;
 
-            if (Event.type == SDL_MOUSEMOTION) Cursor = AtPhys::Vector2(Event.motion.x, Event.motion.y); else {
+            if (Event.type == SDL_MOUSEMOTION) Cursor = AtObjects::Vector2(Event.motion.x, Event.motion.y); else {
                 if (Event.type != SDL_MOUSEWHEEL) {
                     Event.motion.x = Cursor.X();
                     Event.motion.y = Cursor.Y();

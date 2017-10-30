@@ -3,8 +3,8 @@
 #define NEOGUI_ELEMENT_H
 
 #include <SDL2/SDL.h>
-#include <AtPhys/Object.h>
-#include <AtGfx/Renderable.h>
+#include <AtObjects/Object.h>
+#include <AtObjects/Renderable.h>
 
 namespace AtGLui {
     namespace Events {
@@ -17,13 +17,13 @@ namespace AtGLui {
         const int Vertical                  = 2;
     }
 
-    class Element: public AtPhys::Object {
+    class Element: public AtObjects::Object {
         //Members
         protected:
             Element *Parent;
             bool Container, ClipContents, CopyInput, Disabled, ShareInput;
-            AtGfx::Renderable Renderable;
-            AtPhys::Vector2 Margin, Padding;
+            AtObjects::Renderable Renderable;
+            AtObjects::Vector2 Margin, Padding;
         //Access Methods
         public:
             Element();
@@ -33,7 +33,7 @@ namespace AtGLui {
             bool ClipsContents();
             bool CopiesInput();
             Element *GetParent();
-            AtGfx::Renderable *GetRenderable();
+            AtObjects::Renderable *GetRenderable();
             float GetMarginX();
             float GetMarginY();
             bool IsContainer();
