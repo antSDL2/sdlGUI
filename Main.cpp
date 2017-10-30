@@ -46,16 +46,11 @@ int main (int argc, char *argv[]) {
         AtObjects::Renderer::Who();
     }
 
-
-
     //Interface Instance
     AtGLui::State Interface(Lua);
     AtGLui::API::Load(Lua, &Interface);
     Interface.SetScaleMode(false);
     Interface.Initialize("Interface/", "Graphics/", "User/");
-    //Interface.LoadState("WorldEditor");
-    //Interface.LoadState("ModelViewUI");
-    //Interface.LoadState("MainScreenUI");
     Interface.LoadState("AtGUIEditor");
 
     //Main Loop
@@ -78,7 +73,6 @@ int main (int argc, char *argv[]) {
 
             if (Event.type == SDL_MOUSEMOTION || Event.type == SDL_JOYAXISMOTION) {
                 CanInput = Application.CanInput();
-                //std::cout << atan2f(Event.motion.y-300, Event.motion.x-400)*180.f/M_PI << std::endl;
             } else CanInput = true;
 
             if (CanInput) {
@@ -95,8 +89,6 @@ int main (int argc, char *argv[]) {
             SDL_PushEvent(&UserEvent);
 
             Interface.Process();
-
-            //std::cout << SDL_GetTicks()/1000 << "\t" << Interpolation << std::endl;
         }
 
         //Output
