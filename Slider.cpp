@@ -23,7 +23,7 @@ namespace AtGLui {
                 const Uint8 *Keyboard = SDL_GetKeyboardState(NULL);
                 bool ShiftState = Keyboard[SDL_SCANCODE_LSHIFT]||Keyboard[SDL_SCANCODE_RSHIFT];
 
-                if (ShiftState && Orientation == Orientation::Horizontal || !ShiftState && Orientation == Orientation::Vertical) {
+                if ((ShiftState && Orientation == Orientation::Horizontal) || (!ShiftState && Orientation == Orientation::Vertical)) {
                     Status -= Event.button.x*0.2f;
                     Input = 241;
                 }
@@ -42,6 +42,7 @@ namespace AtGLui {
                 Cursor->EnableScaling(true);
 
                 if (Orientation == Orientation::Horizontal) {
+                    //std::cout << Name <<" " <<  DragReference.X()-Cursor->X(Reference::Parent) << std::endl;
                     SetStatus((DragReference.X()-Cursor->Width()/2.f)/(Width()-Cursor->Width()));
 
                     if (Status < 0) {
