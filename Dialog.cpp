@@ -1,14 +1,15 @@
 //Dialog.cpp
 #include "Dialog.h"
-#include <AtObjects/Renderer.h>
 #include <iostream>
 #include <math.h>
+
+using namespace AtUtility;
 
 namespace AtGLui {
     Dialog::Dialog() {
         Next = Previous = NULL;
         CopyInput = true; Focused = false;
-        AutoSize = AtObjects::Vector2(true, true);
+        AutoSize = Vector2(true, true);
     }
 
     int Dialog::OnInput(SDL_Event &Event) {

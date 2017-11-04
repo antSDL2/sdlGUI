@@ -1,6 +1,5 @@
 //StatusBar.cpp
 #include "StatusBar.h"
-#include <AtObjects/Renderer.h>
 
 namespace AtGLui {
     float StatusBar::GetStatus() {

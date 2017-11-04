@@ -5,6 +5,9 @@
 #include "Element.h"
 #include "Message.h"
 #include <list>
+
+using namespace AtUtility;
+
 namespace AtGLui {
     namespace Lists {
         static const int Display        = 0;
@@ -20,7 +23,7 @@ namespace AtGLui {
             Element *SelectedItem;
             Message *DisplayMessage;
             int ItemLimit, Items, Type;
-            AtObjects::Vector2 Item;
+            Vector2 Item;
             std::list<Element*> ListItems;
             std::string Orientation;
         //Access Methods
@@ -28,7 +31,7 @@ namespace AtGLui {
             List();
             ~List();
             Message *GetDisplayMessage();
-            AtObjects::Vector2 GetItemSize();
+            Vector2 GetItemSize();
             int GetType();
             int GetItemLimit();
             int GetItems();

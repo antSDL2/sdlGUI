@@ -3,8 +3,9 @@
 #define NEOINTERFACE_API_H
 
 #include "State.h"
-#include <AtTools/AtTools.h>
 #include <AtObjects/API.h>
+
+using namespace AtUtility;
 
 namespace AtGLui {
     class API: protected AtObjects::API<State, Element> {
@@ -46,9 +47,9 @@ namespace AtGLui {
                     lua_newtable(Lua);
                     lua_setfield(Lua, -2, "DebugFocusChanged");
 
-                    AtTools::Lua::ExecuteScript(Lua, "function Interface.OnGlobalEvent(Event, ...) for CallerName,CallbackValues in pairs(GlobalEvents[Event]) do local Caller = CallbackValues[0]; Caller.Callback = CallbackValues[1]; Caller.Callback(...); end end");
-                    AtTools::Lua::ExecuteScript(Lua, "function Interface.RegisterEventHandler(Event, Caller, Value) if (Caller and Value and Event) then GlobalEvents[Event][Caller.ID] = {[0] = Caller, [1] = Value}; end end");
-                    AtTools::Lua::ExecuteScript(Lua, "function Interface.RemoveEventHandlers(CallerID) for Event in pairs(GlobalEvents) do if (GlobalEvents[Event]) then GlobalEvents[Event][CallerID] = nil; end end end");
+                    Lua::ExecuteScript(Lua, "function Interface.OnGlobalEvent(Event, ...) for CallerName,CallbackValues in pairs(GlobalEvents[Event]) do local Caller = CallbackValues[0]; Caller.Callback = CallbackValues[1]; Caller.Callback(...); end end");
+                    Lua::ExecuteScript(Lua, "function Interface.RegisterEventHandler(Event, Caller, Value) if (Caller and Value and Event) then GlobalEvents[Event][Caller.ID] = {[0] = Caller, [1] = Value}; end end");
+                    Lua::ExecuteScript(Lua, "function Interface.RemoveEventHandlers(CallerID) for Event in pairs(GlobalEvents) do if (GlobalEvents[Event]) then GlobalEvents[Event][CallerID] = nil; end end end");
 
                     lua_setglobal(Lua, "GlobalEvents");
 
@@ -139,7 +140,7 @@ namespace AtGLui {
                 int CursorX = 0;
 
                 if (ObjectManager) {
-                    AtObjects::Vector2 Cursor = ObjectManager->GetCursorPosition();
+                    Vector2 Cursor = ObjectManager->GetCursorPosition();
                     CursorX = Cursor.X();
                 }
 
@@ -153,7 +154,7 @@ namespace AtGLui {
                 int CursorY = 0;
 
                 if (ObjectManager) {
-                    AtObjects::Vector2 Cursor = ObjectManager->GetCursorPosition();
+                    Vector2 Cursor = ObjectManager->GetCursorPosition();
                     CursorY = Cursor.Y();
                 }
 
@@ -258,7 +259,7 @@ namespace AtGLui {
                     if (Arguments == 1) {
                         std::string Script = lua_tostring(Lua, 1);
 
-                        AtTools::Lua::ExecuteScript(Lua, Script.c_str());
+                        Lua::ExecuteScript(Lua, Script.c_str());
                     } else std::cerr << "(Interface/API.h) Execute(): Function called with invalid number of arguments (" << Arguments << ")." << std::endl;
                 }
 
@@ -1040,7 +1041,7 @@ namespace AtGLui {
                     std::string ColorString = lua_tostring(Lua, 2);
 
                     int Color[4]; Color[0] = Color[1] = Color[2] = -1; Color[3] = 255;
-                    for (int i = 0; i<3; i++) Color[i] = AtTools::Strings::StringTo<int>(ColorString, ' ', i);
+                    for (int i = 0; i<3; i++) Color[i] = Strings::StringTo<int>(ColorString, ' ', i);
 
                     Element *Object = GetObject<Element>(Lua);
                     if (Object) {
@@ -1503,7 +1504,7 @@ namespace AtGLui {
                         std::string ColorString = lua_tostring(Lua, 2);
 
                         int Color[3]; Color[0] = Color[1] = Color[2] = -1;
-                        for (int i = 0; i<3; i++) Color[i] = AtTools::Strings::StringTo<int>(ColorString, ' ', i);
+                        for (int i = 0; i<3; i++) Color[i] = Strings::StringTo<int>(ColorString, ' ', i);
 
                         Object->SetShadowColor(Color);
                     }

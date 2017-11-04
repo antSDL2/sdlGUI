@@ -1,12 +1,16 @@
 //State.cpp
 #include "State.h"
-#include <AtObjects/Renderer.h>
+#include <AtUtility/Files.h>
+#include <AtUtility/Renderer.h>
+#include <AtUtility/Lua.h>
 #include <SDL2/SDL_ttf.h>
 #include <iostream>
 #include <sstream>
 #include <fstream>
 #include <math.h>
 #include <sys/stat.h>
+
+using namespace AtUtility;
 
 namespace AtGLui {
     void State::BrowseTextboxes() {
@@ -34,8 +38,8 @@ namespace AtGLui {
         Frame *Frame = Frames.GetFirst();
         while (Frame) {
             if (Frame->GetName() == Frame->GetIndex()) {
-                if (!Frame->IsEmbedded()) AtTools::Lua::ExecuteScript(Lua, Frame->GetIndex() + ":OnExit()");
-                AtTools::Lua::ExecuteScript(Lua, Frame->GetIndex() + " = nil");
+                if (!Frame->IsEmbedded()) Lua::ExecuteScript(Lua, Frame->GetIndex() + ":OnExit()");
+                Lua::ExecuteScript(Lua, Frame->GetIndex() + " = nil");
             }
 
             Frame = Frame->Next;
@@ -83,7 +87,7 @@ namespace AtGLui {
         Binds.SetState(true);
     }
 
-    AtObjects::Vector2 &State::GetCursorPosition() {
+    Vector2 &State::GetCursorPosition() {
         return CursorPosition;
     }
 
@@ -158,8 +162,8 @@ namespace AtGLui {
                         } else if (AttributeValue == "BOTTOM") {
                             Element->AnchorAt(0, 1);
                         } else {
-                            float HorizontalAnchor = AtTools::Strings::StringTo<float>(AttributeValue, ' ');
-                            float VerticalAnchor = AtTools::Strings::StringTo<float>(AttributeValue, ' ', 1);
+                            float HorizontalAnchor = Strings::StringTo<float>(AttributeValue, ' ');
+                            float VerticalAnchor = Strings::StringTo<float>(AttributeValue, ' ', 1);
                             Element->AnchorAt(HorizontalAnchor, VerticalAnchor);
                         }
                     } else if (Attribute == "AutoSize") {
@@ -168,7 +172,7 @@ namespace AtGLui {
                         if (AttributeValue == "true") Element->SetClipContents(true); else Element->SetClipContents(false);
                     } else if (Attribute == "Color") {
                         int Color[4]; Color[0] = Color[1] = Color[2] = Color[3] = -1;
-                        for (int i = 0; i<3; i++) Color[i] = AtTools::Strings::StringTo<int>(AttributeValue, ' ', i);
+                        for (int i = 0; i<3; i++) Color[i] = Strings::StringTo<int>(AttributeValue, ' ', i);
                         AtObjects::Renderable *Renderable = Element->GetRenderable();
                         Renderable->SetIdleColor(Color);
                     } else if (Attribute == "Container") {
@@ -182,7 +186,7 @@ namespace AtGLui {
                             SetElementFont(Element->GetID(), AttributeValue);
                         }
                     } else if (Attribute == "Height") {
-                        int Height = AtTools::Strings::StringTo<int>(AttributeValue);
+                        int Height = Strings::StringTo<int>(AttributeValue);
                         Element->Resize(Axis::Y, Height);
                     } else if (Attribute == "Interactive") {
                         bool State = false;
@@ -193,28 +197,28 @@ namespace AtGLui {
                         if (AttributeValue == "true") State = true; else State = false;
                         Element->GetInteractable()->EnableMoving(State);
                     } else if (Attribute == "Offset") {
-                        float X = AtTools::Strings::StringTo<float>(AttributeValue, ' ');
-                        float Y = AtTools::Strings::StringTo<float>(AttributeValue, ' ', 1);
+                        float X = Strings::StringTo<float>(AttributeValue, ' ');
+                        float Y = Strings::StringTo<float>(AttributeValue, ' ', 1);
                         Element->DropAt(X, Y);
                     } else if (Attribute == "OffsetX") {
-                        float X = AtTools::Strings::StringTo<float>(AttributeValue);
+                        float X = Strings::StringTo<float>(AttributeValue);
                         Element->Offset(Axis::X, X);
                     } else if (Attribute == "OffsetY") {
-                        float Y = AtTools::Strings::StringTo<float>(AttributeValue);
+                        float Y = Strings::StringTo<float>(AttributeValue);
                         Element->Offset(Axis::Y, Y);
                     } else if (Attribute == "Margin") {
-                        float X = AtTools::Strings::StringTo<float>(AttributeValue, ' ');
-                        float Y = AtTools::Strings::StringTo<float>(AttributeValue, ' ', 1);
+                        float X = Strings::StringTo<float>(AttributeValue, ' ');
+                        float Y = Strings::StringTo<float>(AttributeValue, ' ', 1);
                         Element->SetMargin(X, Y);
                     } else if (Attribute == "MaxVelocity") {
-                        float MaxVelocity = AtTools::Strings::StringTo<float>(AttributeValue);
+                        float MaxVelocity = Strings::StringTo<float>(AttributeValue);
                         Element->LimitVelocity(MaxVelocity);
                     } else if (Attribute == "Padding") {
-                        float X = AtTools::Strings::StringTo<float>(AttributeValue, ' ');
-                        float Y = AtTools::Strings::StringTo<float>(AttributeValue, ' ', 1);
+                        float X = Strings::StringTo<float>(AttributeValue, ' ');
+                        float Y = Strings::StringTo<float>(AttributeValue, ' ', 1);
                         Element->AddPadding(X, Y);
                     } else if (Attribute == "Resistance") {
-                        int Resistance = AtTools::Strings::StringTo<int>(AttributeValue);
+                        int Resistance = Strings::StringTo<int>(AttributeValue);
                         Element->ResistDrag(Resistance);
                     } else if (Attribute == "Resizable") {
                         bool State = false;
@@ -233,7 +237,7 @@ namespace AtGLui {
                     } else if (Attribute == "Value") {
                         Element->SetValue(AttributeValue);
                     } else if (Attribute == "Width") {
-                        int Width = AtTools::Strings::StringTo<int>(AttributeValue);
+                        int Width = Strings::StringTo<int>(AttributeValue);
                         Element->Resize(Axis::X, Width);
                     }
                 }
@@ -440,7 +444,7 @@ namespace AtGLui {
             //Execute scripts
             for (unsigned int i=0; i<Scripts.size(); i++) {
                 if (Debug[1]) std::cout << "[" << SDL_GetTicks() << "] " << Scripts[i] << std::endl;
-                AtTools::Lua::ExecuteScript(Lua, Scripts[i]);
+                Lua::ExecuteScript(Lua, Scripts[i]);
             }
             Scripts.clear();
         } while (Count);
@@ -880,7 +884,7 @@ namespace AtGLui {
                                         Script += "()\n" + Text + "\n end";
                                     }
 
-                                    AtTools::Lua::ExecuteScript(Lua, Script);
+                                    Lua::ExecuteScript(Lua, Script);
                                 }
                             }
                         }
@@ -1016,13 +1020,13 @@ namespace AtGLui {
                                         if (Frame) {
                                             if (Embedded) {
                                                 Frame->SetEmbedded(true);
-                                            } else AtTools::Lua::ExecuteScript(Lua, Name + " = Frame.New('" + AddOn + "." + Name + "')");
+                                            } else Lua::ExecuteScript(Lua, Name + " = Frame.New('" + AddOn + "." + Name + "')");
                                             LoadElement(Frame, Tag);
                                             if (Trigger == AtXml::Trigger::Open) Parent = Frame;
                                         }
                                     } else if (Frames[Parent]) {
                                         if (Scripts != "") {
-                                            AtTools::Lua::ExecuteFile(Lua, Scripts);
+                                            Lua::ExecuteFile(Lua, Scripts);
                                         }
                                     }
                                 } else if (Tag == "List") {
@@ -1090,7 +1094,7 @@ namespace AtGLui {
 
                 struct stat buffer;
                 if (stat (Location.c_str(), &buffer) == 0) {
-                    AtTools::Lua::ExecuteFile(Lua, Location);
+                    Lua::ExecuteFile(Lua, Location);
                 }
             }
         }
@@ -1104,7 +1108,7 @@ namespace AtGLui {
             GLubyte Data[4*Texture->GetWidth()*Texture->GetHeight()];
             Texture->GetData(Data);
 
-            Cursor = AtObjects::Renderer::CreateCursorFromData(Data, Texture->GetWidth(), Texture->GetHeight());
+            Cursor = Renderer::CreateCursorFromData(Data, Texture->GetWidth(), Texture->GetHeight());
             if (Cursor) {
                 SDL_SetCursor(Cursor);
             }
@@ -1136,7 +1140,7 @@ namespace AtGLui {
 
                     //Key
                     if (Data[0] != "") {
-                        SDL_Scancode Key = (SDL_Scancode)AtTools::Strings::StringTo<int>(Data[0]);
+                        SDL_Scancode Key = (SDL_Scancode)Strings::StringTo<int>(Data[0]);
                         Bind->SetKey(Key);
                     }
 
@@ -1207,11 +1211,11 @@ namespace AtGLui {
                     //Ambience
                     if (Tag == "Interface" && Data[1] != "") {
                         int Ambience[3];
-                        Ambience[0] = AtTools::Strings::StringTo<int>(Data[1], ' ');
-                        Ambience[1] = AtTools::Strings::StringTo<int>(Data[1], ' ', 1);
-                        Ambience[2] = AtTools::Strings::StringTo<int>(Data[1], ' ', 2);
+                        Ambience[0] = Strings::StringTo<int>(Data[1], ' ');
+                        Ambience[1] = Strings::StringTo<int>(Data[1], ' ', 1);
+                        Ambience[2] = Strings::StringTo<int>(Data[1], ' ', 2);
 
-                        AtObjects::Renderer::SetClearColor(Ambience[0], Ambience[1], Ambience[2]);
+                        Renderer::SetClearColor(Ambience[0], Ambience[1], Ambience[2]);
                     }
                 }
             } else if (Lists[Element]) {
@@ -1245,14 +1249,14 @@ namespace AtGLui {
 
                     //ItemSize
                     if (Data[3] != "") {
-                        int Width = AtTools::Strings::StringTo<int>(Data[3], 'x');
-                        int Height = AtTools::Strings::StringTo<int>(Data[3], 'x', 1);
+                        int Width = Strings::StringTo<int>(Data[3], 'x');
+                        int Height = Strings::StringTo<int>(Data[3], 'x', 1);
                         List->SetItemSize(Width, Height);
                     }
 
                     //ItemLimit
                     if (Data[4] != "") {
-                        int ItemLimit = AtTools::Strings::StringTo<float>(Data[4]);
+                        int ItemLimit = Strings::StringTo<float>(Data[4]);
                         List->SetItemLimit(ItemLimit);
                     }
 
@@ -1279,15 +1283,15 @@ namespace AtGLui {
 
                     //ShadowOffset
                     if (Data[7] != "") {
-                        float X = AtTools::Strings::StringTo<float>(Data[7], ' ');
-                        float Y = AtTools::Strings::StringTo<float>(Data[7], ' ', 1);
+                        float X = Strings::StringTo<float>(Data[7], ' ');
+                        float Y = Strings::StringTo<float>(Data[7], ' ', 1);
                         Message->SetShadowOffset(X, Y);
                     }
 
                     //ShadowColor
                     if (Data[8] != "") {
                         int Color[3]; Color[0] = Color[1] = Color[2] = -1;
-                        for (int i=0; i<3; i++) Color[i] = AtTools::Strings::StringTo<int>(Data[8], ' ', i);
+                        for (int i=0; i<3; i++) Color[i] = Strings::StringTo<int>(Data[8], ' ', i);
                         Message->SetShadowColor(Color);
                     }
 
@@ -1298,7 +1302,7 @@ namespace AtGLui {
 
                     //CharacterLimit
                     if (Data[10] != "") {
-                        int CharacterLimit = AtTools::Strings::StringTo<int>(Data[10]);
+                        int CharacterLimit = Strings::StringTo<int>(Data[10]);
                         Message->SetCharacterLimit(CharacterLimit);
                     }
 
@@ -1318,28 +1322,28 @@ namespace AtGLui {
 
                     //Size
                     if (Data[1] != "") {
-                        int Size = AtTools::Strings::StringTo<int>(Data[1]);
+                        int Size = Strings::StringTo<int>(Data[1]);
                         Paragraph->SetSize(Size);
                     }
 
                     //Color
                     if (Data[2] != "") {
                         int Color[3]; Color[0] = Color[1] = Color[2] = -1;
-                        for (int i=0; i<3; i++) Color[i] = AtTools::Strings::StringTo<int>(Data[2], ' ', i);
+                        for (int i=0; i<3; i++) Color[i] = Strings::StringTo<int>(Data[2], ' ', i);
                         Paragraph->SetShadowColor(Color);
                     }
 
                     //ShadowOffset
                     if (Data[7] != "") {
-                        float X = AtTools::Strings::StringTo<float>(Data[7], ' ');
-                        float Y = AtTools::Strings::StringTo<float>(Data[7], ' ', 1);
+                        float X = Strings::StringTo<float>(Data[7], ' ');
+                        float Y = Strings::StringTo<float>(Data[7], ' ', 1);
                         Paragraph->SetShadowOffset(X, Y);
                     }
 
                     //ShadowColor
                     if (Data[8] != "") {
                         int Color[3]; Color[0] = Color[1] = Color[2] = -1;
-                        for (int i=0; i<3; i++) Color[i] = AtTools::Strings::StringTo<int>(Data[8], ' ', i);
+                        for (int i=0; i<3; i++) Color[i] = Strings::StringTo<int>(Data[8], ' ', i);
                         Paragraph->SetShadowColor(Color);
                     }
 
@@ -1359,19 +1363,19 @@ namespace AtGLui {
 
                     //Status
                     if (Data[0] != "") {
-                        float Status = AtTools::Strings::StringTo<float>(Data[0]);
+                        float Status = Strings::StringTo<float>(Data[0]);
                         Slider->SetStatus(Status);
                     }
 
                     //MaximumValue
                     if (Data[1] != "") {
-                        float MaximumValue = AtTools::Strings::StringTo<float>(Data[1]);
+                        float MaximumValue = Strings::StringTo<float>(Data[1]);
                         Slider->SetMaximumValue(MaximumValue);
                     }
 
                     //MinimumValue
                     if (Data[2] != "") {
-                        float MinimumValue = AtTools::Strings::StringTo<float>(Data[2]);
+                        float MinimumValue = Strings::StringTo<float>(Data[2]);
                         Slider->SetMinimumValue(MinimumValue);
                     }
 
@@ -1407,7 +1411,7 @@ namespace AtGLui {
 
                     //Status
                     if (Data[0] != "") {
-                        float Status = AtTools::Strings::StringTo<float>(Data[0]);
+                        float Status = Strings::StringTo<float>(Data[0]);
                         StatusBar->SetStatus(Status);
                     }
 
@@ -1426,7 +1430,7 @@ namespace AtGLui {
 
                     //Direction
                     if (Data[2] != "") {
-                        int Direction = AtTools::Strings::StringTo<int>(Data[2]);
+                        int Direction = Strings::StringTo<int>(Data[2]);
                         StatusBar->SetDirection(Direction);
                     }
                 }
@@ -1450,7 +1454,7 @@ namespace AtGLui {
 
     void State::LoadFontIndex(std::string Path) {
         std::string FileType = ".xml";
-        std::vector<std::string> DirectoryList = AtTools::Files::GetDirectoryList(Path, FileType);
+        std::vector<std::string> DirectoryList = Files::GetDirectoryList(Path, FileType);
 
         std::vector<std::string>::const_iterator it = DirectoryList.begin();
         while (it!=DirectoryList.end()) {
@@ -1491,9 +1495,9 @@ namespace AtGLui {
 
             for (int i=0; i<Items; i++) RemoveRelatedTo(Paragraph);
 
-            int Spaces = AtTools::Strings::FindTotalOf(' ', Text);
+            int Spaces = Strings::FindTotalOf(' ', Text);
             for (int i=0; i<=Spaces; i++) {
-                std::string Word = AtTools::Strings::Seperate(Text, ' ', i)+" ";
+                std::string Word = Strings::Seperate(Text, ' ', i)+" ";
 
                 std::ostringstream Stream;
                 Stream << Paragraph->GetName() << "Item" << (Paragraph->GetItems()) << "Message";
@@ -1517,7 +1521,7 @@ namespace AtGLui {
 
                     Message->EnableScaling(true);
                     int Width = 0, Height = 0;
-                    AtObjects::Renderer::GetStringSize(Message->GetFont(), Message->GetSize(), Word, Width, Height);
+                    Renderer::GetStringSize(Message->GetFont(), Message->GetSize(), Word, Width, Height);
                     Message->ResizeTo(Width/Scale.X(), Height/Scale.Y());
                     Message->EnableScaling(false);
 
@@ -1571,7 +1575,7 @@ namespace AtGLui {
 
     void State::LoadStateIndex(std::string Path) {
         std::string FileType = ".xml";
-        std::vector<std::string> DirectoryList = AtTools::Files::GetDirectoryList(Path, FileType);
+        std::vector<std::string> DirectoryList = Files::GetDirectoryList(Path, FileType);
 
         std::vector<std::string>::const_iterator it = DirectoryList.begin();
         while (it!=DirectoryList.end()) {
@@ -1584,7 +1588,7 @@ namespace AtGLui {
 
     void State::LoadTextureIndex(std::string Path) {
         std::string FileType = ".xml";
-        std::vector<std::string> DirectoryList = AtTools::Files::GetDirectoryList(Path, FileType);
+        std::vector<std::string> DirectoryList = Files::GetDirectoryList(Path, FileType);
 
         std::vector<std::string>::const_iterator it = DirectoryList.begin();
         while (it!=DirectoryList.end()) {
@@ -1630,22 +1634,22 @@ namespace AtGLui {
         switch (ListID) {
             case Lists::Binds:
                 Element = MakeObject(Binds, AddOn, Name, Parent);
-                if (Element && AddOnFrame && !AddOnFrame->IsEmbedded()) AtTools::Lua::ExecuteScript(Lua, AddOn + "." + Name + " = Bind.New(\"" + AddOn + "." + Name + "\")");
+                if (Element && AddOnFrame && !AddOnFrame->IsEmbedded()) Lua::ExecuteScript(Lua, AddOn + "." + Name + " = Bind.New(\"" + AddOn + "." + Name + "\")");
                 break;
             case Lists::Buttons:
                 Element = MakeObject(Buttons, AddOn, Name, Parent);
-                if (Element && AddOnFrame && !AddOnFrame->IsEmbedded()) AtTools::Lua::ExecuteScript(Lua, AddOn + "." + Name + " = Button.New(\"" + AddOn + "." + Name + "\")");
+                if (Element && AddOnFrame && !AddOnFrame->IsEmbedded()) Lua::ExecuteScript(Lua, AddOn + "." + Name + " = Button.New(\"" + AddOn + "." + Name + "\")");
                 break;
             case Lists::Dialogs:
                 Element = MakeObject(Dialogs, AddOn, Name, Parent);
-                if (Element && AddOnFrame && !AddOnFrame->IsEmbedded()) AtTools::Lua::ExecuteScript(Lua, AddOn + "." + Name + " = Dialog.New(\"" + AddOn + "." + Name + "\")");
+                if (Element && AddOnFrame && !AddOnFrame->IsEmbedded()) Lua::ExecuteScript(Lua, AddOn + "." + Name + " = Dialog.New(\"" + AddOn + "." + Name + "\")");
                 break;
             case Lists::Frames:
                 {
                     Frame *Frame = MakeObject(Frames, AddOn, Name, Parent);
                     if (Frame) {
                         Element = Frame;
-                        if (AddOnFrame && !AddOnFrame->IsEmbedded()) AtTools::Lua::ExecuteScript(Lua, AddOn + "." + Name + " = Frame.New(\"" + AddOn + "." + Name + "\")");
+                        if (AddOnFrame && !AddOnFrame->IsEmbedded()) Lua::ExecuteScript(Lua, AddOn + "." + Name + " = Frame.New(\"" + AddOn + "." + Name + "\")");
 
                         //Point to a Message
                         if (Parent && Messages[Parent]) {
@@ -1664,7 +1668,7 @@ namespace AtGLui {
                     List *List = MakeObject(Lists, AddOn, Name, Parent);
                     if (List) {
                         Element = List;
-                        if (AddOnFrame && !AddOnFrame->IsEmbedded()) AtTools::Lua::ExecuteScript(Lua, AddOn + "." + Name + " = List.New(\"" + AddOn + "." + Name + "\")");
+                        if (AddOnFrame && !AddOnFrame->IsEmbedded()) Lua::ExecuteScript(Lua, AddOn + "." + Name + " = List.New(\"" + AddOn + "." + Name + "\")");
 
                         //Point to a Button
                         if (Parent && Buttons[Parent]) {
@@ -1688,7 +1692,7 @@ namespace AtGLui {
                     Message *Message = MakeObject(Messages, AddOn, Name, Parent);
                     if (Message) {
                         Element = Message;
-                        if (AddOnFrame && !AddOnFrame->IsEmbedded()) AtTools::Lua::ExecuteScript(Lua, AddOn + "." + Name + " = Message.New(\"" + AddOn + "." + Name + "\")");
+                        if (AddOnFrame && !AddOnFrame->IsEmbedded()) Lua::ExecuteScript(Lua, AddOn + "." + Name + " = Message.New(\"" + AddOn + "." + Name + "\")");
 
                         //Point to a DropDownButton
                         if (Parent && Buttons[Parent]) {
@@ -1702,15 +1706,15 @@ namespace AtGLui {
                 break;
             case Lists::Paragraphs:
                 Element = MakeObject(Paragraphs, AddOn, Name, Parent);
-                if (Element && AddOnFrame && !AddOnFrame->IsEmbedded()) AtTools::Lua::ExecuteScript(Lua, AddOn + "." + Name + " = Paragraph.New(\"" + AddOn + "." + Name + "\")");
+                if (Element && AddOnFrame && !AddOnFrame->IsEmbedded()) Lua::ExecuteScript(Lua, AddOn + "." + Name + " = Paragraph.New(\"" + AddOn + "." + Name + "\")");
                 break;
             case Lists::Sliders:
                 Element = MakeObject(Sliders, AddOn, Name, Parent);
-                if (Element && AddOnFrame && !AddOnFrame->IsEmbedded()) AtTools::Lua::ExecuteScript(Lua, AddOn + "." + Name + " = Slider.New(\"" + AddOn + "." + Name + "\")");
+                if (Element && AddOnFrame && !AddOnFrame->IsEmbedded()) Lua::ExecuteScript(Lua, AddOn + "." + Name + " = Slider.New(\"" + AddOn + "." + Name + "\")");
                 break;
             case Lists::StatusBars:
                 Element = MakeObject(StatusBars, AddOn, Name, Parent);
-                if (Element && AddOnFrame && !AddOnFrame->IsEmbedded()) AtTools::Lua::ExecuteScript(Lua, AddOn + "." + Name + " = StatusBar.New(\"" + AddOn + "." + Name + "\")");
+                if (Element && AddOnFrame && !AddOnFrame->IsEmbedded()) Lua::ExecuteScript(Lua, AddOn + "." + Name + " = StatusBar.New(\"" + AddOn + "." + Name + "\")");
                 break;
             default:
                 std::cerr << "(Interface/State.cpp) MakeElement(): Supplied invalid List ID during element creation: " << ListID << std::endl;
@@ -1802,9 +1806,9 @@ namespace AtGLui {
             if (Frame && !Frame->IsEmbedded()) {
                 if (Function == "OnProcess") {
                     if (Index == Name) {
-                        AtTools::Lua::ExecuteScript(Lua, Index + ":" + Function + "()");
+                        Lua::ExecuteScript(Lua, Index + ":" + Function + "()");
                     } else {
-                        AtTools::Lua::ExecuteScript(Lua, ID + ":" + Function + "()");
+                        Lua::ExecuteScript(Lua, ID + ":" + Function + "()");
                     }
                 } else {
                     if (Index == Name) {
@@ -1830,9 +1834,9 @@ namespace AtGLui {
                 Renderable->SetTexture(NewTexture);
 
                 if (NewTexture) {
-                    AtObjects::Vector2 CorrectionFactor = AtObjects::Vector2(Scale.X(), Scale.Y());
+                    Vector2 CorrectionFactor = Vector2(Scale.X(), Scale.Y());
 
-                    if (!ScaleMode) CorrectionFactor = AtObjects::Vector2(1.f, 1.f);
+                    if (!ScaleMode) CorrectionFactor = Vector2(1.f, 1.f);
 
                     Message->ResizeTo(NewTexture->GetWidth()/CorrectionFactor.X(), NewTexture->GetHeight()/CorrectionFactor.Y());
                 } else {
@@ -1890,7 +1894,7 @@ namespace AtGLui {
 
             if (Removed) {
                 //Erase from the Lua table
-                AtTools::Lua::ExecuteScript(Lua, Script);
+                Lua::ExecuteScript(Lua, Script);
 
                 //Update ParentList
                 if (Lists[Parent]) {
@@ -1955,7 +1959,7 @@ namespace AtGLui {
 
         if (Removed) {
             //Erase from Lua table
-            if (Name == Index) AtTools::Lua::ExecuteScript(Lua, Name + " = nil;"); else AtTools::Lua::ExecuteScript(Lua, ID + " = nil;");
+            if (Name == Index) Lua::ExecuteScript(Lua, Name + " = nil;"); else Lua::ExecuteScript(Lua, ID + " = nil;");
 
             //Update ParentList
             if (Lists[Parent]) {
@@ -2145,14 +2149,14 @@ namespace AtGLui {
                 //Size
                 if (Data[1] != "") {
                     int Size = 0;
-                    Size = AtTools::Strings::StringTo<int>(Data[1]);
+                    Size = Strings::StringTo<int>(Data[1]);
                     Message->SetSize(Size);
                 }
 
                 //Color
                 if (Data[2] != "") {
                     int Color[4]; Color[0] = Color[1] = Color[2] = Color[3] = 255;
-                    for (int i = 0; i<3; i++) Color[i] = AtTools::Strings::StringTo<int>(Data[2], ' ', i);
+                    for (int i = 0; i<3; i++) Color[i] = Strings::StringTo<int>(Data[2], ' ', i);
 
                     AtObjects::Renderable *Renderable = Message->GetRenderable();
                     Renderable->SetIdleColor(Color);
@@ -2161,13 +2165,13 @@ namespace AtGLui {
                 //Transparency
                 if (Data[3] != "") {
                     AtObjects::Renderable *Renderable = Message->GetRenderable();
-                    Renderable->SetTransparency(AtTools::Strings::StringTo<float>(Data[3]));
+                    Renderable->SetTransparency(Strings::StringTo<float>(Data[3]));
                 }
 
                 //Hover Color
                 if (Data[4] != "") {
                     int HoverColor[4]; HoverColor[0] = HoverColor[1] = HoverColor[2] = 255; HoverColor[3] = 255;
-                    for (int i = 0; i<3; i++) HoverColor[i] = AtTools::Strings::StringTo<int>(Data[4], ' ', i);
+                    for (int i = 0; i<3; i++) HoverColor[i] = Strings::StringTo<int>(Data[4], ' ', i);
 
                     AtObjects::Renderable *Renderable = Message->GetRenderable();
                     Renderable->SetHoverColor(HoverColor);
@@ -2179,9 +2183,9 @@ namespace AtGLui {
                     char Style = '\0';
                     while (Data[5].length() > 0) {
                         if (Data[5].length() == 1) {
-                            Style = AtTools::Strings::StringTo<char>(Data[5]);
+                            Style = Strings::StringTo<char>(Data[5]);
                         } else {
-                            Style = AtTools::Strings::StringTo<char>(Data[5], ' ');
+                            Style = Strings::StringTo<char>(Data[5], ' ');
                         }
 
                         switch (Style) {
@@ -2226,18 +2230,18 @@ namespace AtGLui {
                 //Size
                 if (Data[1] != "") {
                     int Size = 0;
-                    Size = AtTools::Strings::StringTo<int>(Data[1]);
+                    Size = Strings::StringTo<int>(Data[1]);
                     Paragraph->SetSize(Size);
                 }
 
                 //Color
                 if (Data[2] != "") {
                     int Color[4]; Color[0] = Color[1] = Color[2] = Color[3] = 255;
-                    for (int i = 0; i<3; i++) Color[i] = AtTools::Strings::StringTo<int>(Data[2], ' ', i);
+                    for (int i = 0; i<3; i++) Color[i] = Strings::StringTo<int>(Data[2], ' ', i);
 
                     //Transparency
                     if (Data[3] != "") {
-                        Color[3] = AtTools::Strings::StringTo<float>(Data[3])*255.0f/100.0f;
+                        Color[3] = Strings::StringTo<float>(Data[3])*255.0f/100.0f;
                     }
 
                     AtObjects::Renderable *Renderable = Paragraph->GetRenderable();
@@ -2247,7 +2251,7 @@ namespace AtGLui {
                 //Hover Color
                 if (Data[4] != "") {
                     int HoverColor[4]; HoverColor[0] = HoverColor[1] = HoverColor[2] = 255; HoverColor[3] = 255;
-                    for (int i = 0; i<3; i++) HoverColor[i] = AtTools::Strings::StringTo<int>(Data[4], ' ', i);
+                    for (int i = 0; i<3; i++) HoverColor[i] = Strings::StringTo<int>(Data[4], ' ', i);
 
                     //Transparency
                     //TEMP TODO Fix transparency for HoverColor
@@ -2262,9 +2266,9 @@ namespace AtGLui {
                     char Style = '\0';
                     while (Data[5].length() > 0) {
                         if (Data[5].length() == 1) {
-                            Style = AtTools::Strings::StringTo<char>(Data[5]);
+                            Style = Strings::StringTo<char>(Data[5]);
                         } else {
-                            Style = AtTools::Strings::StringTo<char>(Data[5], ' ');
+                            Style = Strings::StringTo<char>(Data[5], ' ');
                         }
 
                         switch (Style) {
@@ -2303,7 +2307,7 @@ namespace AtGLui {
 
             Interface.ResizeTo(NativeWidth, NativeHeight);
 
-            Resolution = AtObjects::Vector2(Width, Height);
+            Resolution = Vector2(Width, Height);
 
             float ScaleX = (float)Width/NativeWidth;
             float ScaleY = (float)Height/NativeHeight;
@@ -2321,7 +2325,7 @@ namespace AtGLui {
         //ScaleX = floor(ScaleX*100.f+0.5f)/100.f;
         //ScaleY = floor(ScaleY*100.f+0.5f)/100.f;
 
-        Scale = AtObjects::Vector2(ScaleX, ScaleY);
+        Scale = Vector2(ScaleX, ScaleY);
 
         if (ScaleMode) {
             ScaleList(Buttons, Scale);
@@ -2333,10 +2337,10 @@ namespace AtGLui {
             ScaleList(Sliders, Scale);
             ScaleList(StatusBars, Scale);
         } else {
-            AtObjects::Vector2 VectorOne = AtObjects::Vector2(1, 1);
+            Vector2 VectorOne = Vector2(1, 1);
 
             ScaleList(Buttons, VectorOne);
-            ScaleList(Dialogs, AtObjects::Vector2(1, 1));
+            ScaleList(Dialogs, Vector2(1, 1));
 
             /*
             Frame *Frame = Frames.GetFirst();

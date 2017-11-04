@@ -2,6 +2,8 @@
 #include "Button.h"
 #include <iostream>
 
+using namespace AtUtility;
+
 namespace AtGLui {
     Button::Button() {
         Next = Previous = NULL;
@@ -31,7 +33,7 @@ namespace AtGLui {
         if (!Disabled) {
             if (Type == Buttons::Standard) {
                 Renderable.SetTile(3);
-                ChildrenOffset = AtObjects::Vector2(1, 1);
+                ChildrenOffset = Vector2(1, 1);
             } else if (Type == Buttons::DropDown) {
                 Renderable.SetTile(3);
             }
@@ -42,7 +44,7 @@ namespace AtGLui {
         if (!Disabled) {
             if (Type == Buttons::Standard) {
                 if (Hovered) Renderable.SetTile(2); else Renderable.SetTile(1);
-                ChildrenOffset = AtObjects::Vector2(0, 0);
+                ChildrenOffset = Vector2(0, 0);
             } else if (Type == Buttons::DropDown) {
                 if (Hovered) Renderable.SetTile(2); else Renderable.SetTile(1);
                 if (DisplayList) DisplayList->Toggle();
@@ -70,7 +72,7 @@ namespace AtGLui {
         if (!Disabled) {
             if (Type == Buttons::Standard) {
                 Renderable.SetTile(1);
-                ChildrenOffset = AtObjects::Vector2(0, 0);
+                ChildrenOffset = Vector2(0, 0);
             } else if (Type == Buttons::DropDown) {
                 Renderable.SetTile(1);
             } else if (Type == Buttons::Checkbox) {

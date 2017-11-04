@@ -1,6 +1,8 @@
 //Paragraph.cpp
 #include "Paragraph.h"
 
+using namespace AtUtility;
+
 namespace AtGLui {
     std::string Paragraph::GetFont() {
         return Font;
@@ -10,7 +12,7 @@ namespace AtGLui {
         return ShadowColor;
     }
 
-    AtObjects::Vector2 Paragraph::GetShadowOffset() {
+    Vector2 Paragraph::GetShadowOffset() {
         return ShadowOffset;
     }
 
@@ -49,7 +51,7 @@ namespace AtGLui {
     }
 
     void Paragraph::SetShadowOffset(float X, float Y) {
-        ShadowOffset = AtObjects::Vector2(X, Y);
+        ShadowOffset = Vector2(X, Y);
 
         if (ShadowColor[0] == -1) {
             ShadowColor[0] = ShadowColor[1] = ShadowColor[2] = 0;

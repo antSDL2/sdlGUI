@@ -1,6 +1,7 @@
 //Frame.cpp
 #include "Frame.h"
-//#include <iostream>
+
+using namespace AtUtility;
 
 namespace AtGLui {
     bool Frame::AllowsDebug() {
@@ -10,7 +11,7 @@ namespace AtGLui {
     Frame::Frame() {
         Next = Previous = NULL;
         AllowDebug = true; Embedded = false; Interactable.EnableInteraction(false);
-        AutoSize = AtObjects::Vector2(true, true);
+        AutoSize = Vector2(true, true);
     }
 
     bool Frame::IsEmbedded() {

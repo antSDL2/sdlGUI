@@ -36,7 +36,7 @@ int main (int argc, char *argv[]) {
     }
 
     //Application Instance
-    AtApp::State Application(Lua, "AtGLui Editor", "Graphics/Engine.png");
+    AtApp::State Application(Lua, "GLui Editor", "Graphics/Engine.png");
     AtApp::API::Load(Lua, &Application);
     Application.SetResolution(800, 600);
     Application.AllowResize(true);

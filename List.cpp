@@ -1,7 +1,8 @@
 //List.cpp
 #include "List.h"
 #include <iostream>
-#include <AtObjects/Renderer.h>
+
+using namespace AtUtility;
 
 namespace AtGLui {
     void List::AddItem(Element *ListItem) {
@@ -37,7 +38,7 @@ namespace AtGLui {
         return Items;
     }
 
-    AtObjects::Vector2 List::GetItemSize() {
+    Vector2 List::GetItemSize() {
         return Item;
     }
 
@@ -54,7 +55,7 @@ namespace AtGLui {
     }
 
     List::List() {
-        AutoSize = AtObjects::Vector2(true, true);
+        AutoSize = Vector2(true, true);
         HideOnInput = false;
         Next = Previous = NULL;
         CopyInput = true;
@@ -210,7 +211,7 @@ namespace AtGLui {
     }
 
     void List::SetItemSize(int Width, int Height) {
-        Item = AtObjects::Vector2(Width, Height);
+        Item = Vector2(Width, Height);
     }
 
     void List::SetOrientation(std::string Orientation) {

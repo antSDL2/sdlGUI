@@ -3,6 +3,9 @@
 #define NEOGUI_PARAGRAPH_H
 
 #include "List.h"
+
+using namespace AtUtility;
+
 namespace AtGLui {
     class Paragraph: public List {
         //Members
@@ -11,7 +14,7 @@ namespace AtGLui {
         protected:
             bool Editable;
             int ShadowColor[3], Size, Styles;
-            AtObjects::Vector2 ShadowOffset;
+            Vector2 ShadowOffset;
             std::string Font;
         //Access Methods
         public:
@@ -19,7 +22,7 @@ namespace AtGLui {
             ~Paragraph();
             std::string GetFont();
             int *GetShadowColor();
-            AtObjects::Vector2 GetShadowOffset();
+            Vector2 GetShadowOffset();
             int GetSize();
             int GetStyles();
             bool IsEditable();

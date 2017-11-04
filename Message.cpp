@@ -3,7 +3,9 @@
 #include <iostream>
 #include <sstream>
 #include <stdlib.h>
-#include <AtObjects/Renderer.h>
+#include <AtUtility/Renderer.h>
+
+using namespace AtUtility;
 
 namespace AtGLui {
     void Message::Add(char C) {
@@ -163,7 +165,7 @@ namespace AtGLui {
             if (Cursor->IsShown()) {
                 std::string String = Value.substr(Value.length()+CursorPosition, abs(CursorPosition));
                 int Width = 0, Height = 0;
-                AtObjects::Renderer::GetStringSize(GetFont(), GetSize(), String, Width, Height);
+                Renderer::GetStringSize(GetFont(), GetSize(), String, Width, Height);
                 Cursor->Offset(Axis::X, -Width);
             }
 
@@ -223,8 +225,8 @@ namespace AtGLui {
 
             //TEMP ? PERFORMANCE CONCERN
             if (ShadowColor[0] > -1) {
-                AtObjects::Renderer::SetColor(ShadowColor[0], ShadowColor[1], ShadowColor[2], 255);
-                AtObjects::Renderer::RenderTexture(Texture, TargetX+ShadowOffset.X(), TargetY+ShadowOffset.Y(), TargetWidth, TargetHeight, 0, ClipSize.X(), ClipSize.Y(), ClipPosition.X(), ClipPosition.Y()); //Tile?
+                Renderer::SetColor(ShadowColor[0], ShadowColor[1], ShadowColor[2], 255);
+                Renderable.RenderAsTexture(TargetX+ShadowOffset.X(), TargetY+ShadowOffset.Y(), TargetWidth, TargetHeight, ClipSize.X(), ClipSize.Y(), ClipPosition.X(), ClipPosition.Y(), NULL, true);
             }
 
             Renderable.RenderAsTexture(TargetX, TargetY, TargetWidth, TargetHeight, ClipSize.X(), ClipSize.Y(), ClipPosition.X(), ClipPosition.Y());
@@ -275,7 +277,7 @@ namespace AtGLui {
     }
 
     void Message::SetShadowOffset(float X, float Y) {
-        ShadowOffset = AtObjects::Vector2(X, Y);
+        ShadowOffset = Vector2(X, Y);
 
         if (ShadowColor[0] == -1) {
             ShadowColor[0] = ShadowColor[1] = ShadowColor[2] = 0;
@@ -300,7 +302,7 @@ namespace AtGLui {
         Scaled = true;
 
         int Width = 0, Height = 0;
-        AtObjects::Renderer::GetStringSize(Font, GetSize(), Text, Width, Height);
+        Renderer::GetStringSize(Font, GetSize(), Text, Width, Height);
         ResizeTo((float)Width/Scale.X(), (float)Height/Scale.Y());
 
         Scaled = false;

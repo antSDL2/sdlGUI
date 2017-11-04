@@ -4,6 +4,9 @@
 
 #include "Element.h"
 #include "Frame.h"
+
+using namespace AtUtility;
+
 namespace AtGLui {
     class Message: public Element {
         //Members
@@ -13,7 +16,7 @@ namespace AtGLui {
             bool Editable, Focused;
             Frame *Cursor;
             int CharacterLimit, CursorPosition, CursorTimer, Repeat, RepeatTimer, ShadowColor[3], Size, Styles;
-            AtObjects::Vector2 ShadowOffset;
+            Vector2 ShadowOffset;
             std::string Font;
         //Access Methods
         public:

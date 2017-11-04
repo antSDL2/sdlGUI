@@ -3,9 +3,11 @@
 #include <iostream>
 #include <math.h>
 
+using namespace AtUtility;
+
 namespace AtGLui {
     void Element::AddPadding(float X, float Y) {
-        Padding = AtObjects::Vector2(X, Y);
+        Padding = Vector2(X, Y);
     }
 
     float Element::ChildrenOffsetX() {
@@ -100,9 +102,9 @@ namespace AtGLui {
 
     void Element::OffsetChildren(int Axis, float Position) {
         if (Axis == Axis::X) {
-            ChildrenOffset = AtObjects::Vector2(Position-Padding.X(), ChildrenOffset.Y());
+            ChildrenOffset = Vector2(Position-Padding.X(), ChildrenOffset.Y());
         } else if (Axis == Axis::Y) {
-            ChildrenOffset = AtObjects::Vector2(ChildrenOffset.X(), Position-Padding.Y());
+            ChildrenOffset = Vector2(ChildrenOffset.X(), Position-Padding.Y());
         }
     }
 
@@ -173,7 +175,7 @@ namespace AtGLui {
     }
 
     void Element::SetMargin(int X, int Y) {
-        Margin = AtObjects::Vector2(X, Y);
+        Margin = Vector2(X, Y);
     }
 
     void Element::SetParent(Element *Parent) {
@@ -189,7 +191,7 @@ namespace AtGLui {
         //TEMP Performance concern?
         if (Parent) {
             if (Parent->ClipsContents()) {
-                if (Scale == AtObjects::Vector2(1.f, 1.f)) Parent->EnableScaling(true);
+                if (Scale == Vector2(1.f, 1.f)) Parent->EnableScaling(true);
 
                 float LocalX = X(Reference::Parent)+Parent->ChildrenOffsetX(), LocalY = Y(Reference::Parent)+Parent->ChildrenOffsetY();
                 float Width = this->Width(), Height = this->Height();
@@ -201,10 +203,10 @@ namespace AtGLui {
                 float ClipX = -LocalX/Width;
                 float ClipY = -LocalY/Height;
 
-                ClipSize = AtObjects::Vector2(ClipWidth, ClipHeight);
-                ClipPosition = AtObjects::Vector2(ClipX, ClipY);
+                ClipSize = Vector2(ClipWidth, ClipHeight);
+                ClipPosition = Vector2(ClipX, ClipY);
 
-                if (Scale == AtObjects::Vector2(1.f, 1.f)) Parent->EnableScaling(false);
+                if (Scale == Vector2(1.f, 1.f)) Parent->EnableScaling(false);
                 //if (Name == "Testy") std::cout << ClipY << " " << LocalY << " " << Height << " " << AutoSize.Y() << std::endl;
             } else if (Parent->IsClipped()) {
                 float LocalX = X(Reference::Parent), LocalY = Y(Reference::Parent);
@@ -220,9 +222,9 @@ namespace AtGLui {
                 float ClipWidth = (ParentClipWidth*ParentWidth-LocalX)/Width;
                 float ClipHeight = (ParentClipHeight*ParentHeight-LocalY)/Height;
 
-                ClipPosition = AtObjects::Vector2(ClipX, ClipY);
-                ClipSize = AtObjects::Vector2(ClipWidth, ClipHeight);
-            } else {ClipPosition = AtObjects::Vector2(0.f, 0.f); ClipSize = AtObjects::Vector2(1.f, 1.f);  }
+                ClipPosition = Vector2(ClipX, ClipY);
+                ClipSize = Vector2(ClipWidth, ClipHeight);
+            } else {ClipPosition = Vector2(0.f, 0.f); ClipSize = Vector2(1.f, 1.f);  }
         }
     }
 

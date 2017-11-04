@@ -6,6 +6,8 @@
 #include <AtObjects/Object.h>
 #include <AtObjects/Renderable.h>
 
+using namespace AtUtility;
+
 namespace AtGLui {
     namespace Events {
         static const int Press              = 100;
@@ -22,7 +24,7 @@ namespace AtGLui {
         protected:
             Element *Parent;
             bool Container, ClipContents, CopyInput, Disabled, ShareInput;
-            AtObjects::Vector2 Margin, Padding;
+            Vector2 Margin, Padding;
         //Access Methods
         public:
             Element();

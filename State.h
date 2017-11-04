@@ -4,7 +4,6 @@
 
 #include <Lua/lua.hpp>
 #include <AtObjects/TextureManager.h>
-#include <AtTools/AtTools.h>
 #include <AtObjects/ObjectManager.h>
 #include <AtXml/AtXml.h>
 #include "Bind.h"
@@ -16,6 +15,8 @@
 #include "Paragraph.h"
 #include "Slider.h"
 #include "StatusBar.h"
+
+using namespace AtUtility;
 
 namespace AtGLui {
     namespace Lists {
@@ -53,7 +54,7 @@ namespace AtGLui {
             Element *Focus;
             Frame Interface;
             AtObjects::TextureManager TextureManager;
-            AtObjects::Vector2 CursorPosition;
+            Vector2 CursorPosition;
             SDL_Cursor *Cursor;
         //Access Methods
         public:
@@ -61,7 +62,7 @@ namespace AtGLui {
             ~State();
             template <class Type> void Get(Type *&Object, std::string ID);
             std::string GetElementClass(std::string ID);
-            AtObjects::Vector2 &GetCursorPosition();
+            Vector2 &GetCursorPosition();
             Element *GetFocus(bool State = false);
             AtObjects::TextureManager *GetTextureManager();
             bool IsShown();
