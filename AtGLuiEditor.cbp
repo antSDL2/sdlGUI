@@ -21,7 +21,7 @@
 					<Add option="-lAtGLui-d" />
 					<Add option="-lAtApp-d" />
 					<Add option="-lAtObjects-d" />
-					<Add option="-lAtTools-d" />
+					<Add option="-lAtUtility-d" />
 				</Linker>
 			</Target>
 			<Target title="Release">
@@ -39,7 +39,7 @@
 					<Add option="-lAtGLui" />
 					<Add option="-lAtApp" />
 					<Add option="-lAtObjects" />
-					<Add option="-lAtTools" />
+					<Add option="-lAtUtility" />
 				</Linker>
 			</Target>
 		</Build>
@@ -59,7 +59,7 @@
 			<Add directory="../external/bin" />
 			<Add directory="../AtApp/bin" />
 			<Add directory="../AtObjects/bin" />
-			<Add directory="../AtTools/bin" />
+			<Add directory="../AtUtility/bin" />
 			<Add directory="bin" />
 			<Add directory="../AtXml/bin" />
 		</Linker>
