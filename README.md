@@ -17,9 +17,9 @@ Graphical User Interface library containing class definitions and implementation
 - **API:** API exposing many of the classes and methods defined in the library to a Lua environment. Allows run-time interaction and manipulation of objects created by the library using scripts written in Lua.
 
 ## Dependencies
+- [AtObjects](https://github.com/atrapalis/AtObjects "AtObjects GitHub repository")
+- [AtUtility](https://github.com/atrapalis/AtUtility "AtUtility GitHub repository")
+- [AtXml](https://github.com/atrapalis/AtXml "AtXml GitHub repository")
 - Lua 5.2 binding library (lua52)
 - OpenGL 3.2 (glu32, opengl32)
 - SDL2 base (SDL2)
-- [AtXml](https://github.com/atrapalis/AtXml "AtXml GitHub repository")
-- [AtUtility](https://github.com/atrapalis/AtUtility "AtUtility GitHub repository")
-- [AtObjects](https://github.com/atrapalis/AtObjects "AtObjects GitHub repository")
