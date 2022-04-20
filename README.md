@@ -1,6 +1,6 @@
 # AtGLui
 
-Graphical User Interface library containing class definitions and implementations used in a video game engine written in C++.
+OpenGL User Interface library developed for a custom 2D video game engine. This library interprets user interfaces stored in an XML format into interactive game objects. The functionality of different user interface elements is implemented through Lua scripts using an API.  
 
 ## Classes
 - **Element:** Base class used to describe a user-interface element.
@@ -23,3 +23,46 @@ Graphical User Interface library containing class definitions and implementation
 - Lua 5.2 binding library (lua52)
 - OpenGL 3.2 (glu32, opengl32)
 - SDL2 base (SDL2)
+
+## Example
+
+This very simple example will output the framerate of the application on the bottom left corner of the screen each time the application completes a process loop:
+
+*Framerate.xml*
+```
+<?xml version="1.0" encoding="UTF-8" ?>
+<Interface Scripts="Framerate.lua" Height="25" Anchor="BOTTOM" Padding="10" Shown="false">
+	<Message Name="Message" Anchor="MIDDLE" Font="Arial" Size="12" Text="FPS: 0" ShadowOffset="1" />
+</Interface>
+```
+
+*Framerate.lua*
+```
+-- SaveData
+Framerate.SaveData = {
+	["ShowFPS"] = false
+}
+
+--[[ Elements ]]
+
+-- Framerate
+function Framerate:OnLoad()
+	Interface.LoadAddOnData("Framerate");
+	
+	-- Message
+	if (self.SaveData["ShowFPS"]) then self:Show(); end
+end
+
+function Framerate:OnExit()
+	Interface.SaveAddOnData("Framerate", self.SaveData);
+end
+
+-- Message
+function Framerate.Message:OnProcess()
+	if self:IsShown() then
+		local Text = "FPS: " .. Application:GetFramerate();
+		self:SetText(Text);
+	end
+end
+```
+**Note:** The API call "Application:GetFramerate();" is part of the [AtApp](https://github.com/atrapalis/AtApp) library API.
