@@ -26,7 +26,7 @@ OpenGL User Interface library developed for a custom 2D video game engine. This 
 
 ## Example
 
-This very simple example will output the framerate of the application on the bottom left corner of the screen each time the application completes a process loop:
+This simple example will output the framerate of the application on the bottom left corner of the screen each time the application completes a process loop:
 
 *Framerate.xml*
 ```
