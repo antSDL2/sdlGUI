@@ -1,20 +1,11 @@
 # AtGLui
 
-OpenGL User Interface library developed for a custom 2D video game engine. This library interprets user interfaces stored in an XML format into interactive game objects. The functionality of different user interface elements is implemented through Lua scripts using an API.  
+An OpenGL UI toolkit with a Lua API written in C++. 
 
-## Classes
-- **Element:** Base class used to describe a user-interface element.
-- **Bind:** Used to implement a keybind function. An example of a keybind is the key-combination 'Alt+F4' to shut down an application.
-- **Button:** Used to implement a user-interface button.
-- **Dialog:** Used to implement a user-interface dialog, used as a container for other elements.
-- **Frame:** Used to implement a generic frame, used as a container for other elements.
-- **List:** Used to implement a list of user-interface elements. A list may be used to easily display and position objects in certain arrangements. 
-- **Message:** Used to implement and render Text messages within the application.
-- **Paragraph:** Used to implement and position a series of text messages into a paragraph.
-- **Slider:** Used to implement a slider user-interface element.
-- **StatusBar:** Used to implement a status-bar user-interface element.
-- **State:** Manager class used to load and manipulate different user-interface states (e.g. different menus and dialogs).
-- **API:** API exposing many of the classes and methods defined in the library to a Lua environment. Allows run-time interaction and manipulation of objects created by the library using scripts written in Lua.
+This UI toolkit was developed for a 2D game engine. User interface structures are stored in an XML format and interpreted into interactive game objects. The functionality of different user interface elements is implemented through Lua scripts using an API.  
+
+## Compiling
+To compile the source code, it is recommended to use the Code::Blocks project included in this repository. This library has only been tested in Windows environments. 
 
 ## Dependencies
 - [AtObjects](https://github.com/atrapalis/AtObjects "AtObjects GitHub repository")
@@ -23,6 +14,9 @@ OpenGL User Interface library developed for a custom 2D video game engine. This 
 - Lua 5.2 binding library (lua52)
 - OpenGL 3.2 (glu32, opengl32)
 - SDL2 base (SDL2)
+
+## Documentation
+Documentation can be found in the [GitHub pages](https://atrapalis.github.io/AtGLui/) for this project.
 
 ## Example
 
