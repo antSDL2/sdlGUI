@@ -1497,7 +1497,7 @@ namespace AtGLui {
 
             int Spaces = Strings::FindTotalOf(' ', Text);
             for (int i=0; i<=Spaces; i++) {
-                std::string Word = Strings::Seperate(Text, ' ', i)+" ";
+                std::string Word = Strings::Separate(Text, ' ', i)+" ";
 
                 std::ostringstream Stream;
                 Stream << Paragraph->GetName() << "Item" << (Paragraph->GetItems()) << "Message";
