@@ -2,12 +2,12 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="AtGLuiEditor" />
+		<Option title="sdlGUIEditor" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="../assets/AtGLuiEditor-d" prefix_auto="1" extension_auto="1" />
+				<Option output="../assets/sdlGUIEditor-d" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../assets/" />
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
@@ -18,14 +18,14 @@
 					<Add option="-DDEBUG" />
 				</Compiler>
 				<Linker>
-					<Add option="-lAtGLui-d" />
-					<Add option="-lAtApp-d" />
-					<Add option="-lAtObjects-d" />
-					<Add option="-lAtUtility-d" />
+					<Add option="-lsdlGUI-d" />
+					<Add option="-lsdlApp-d" />
+					<Add option="-lsdlObjects-d" />
+					<Add option="-lsdlUtility-d" />
 				</Linker>
 			</Target>
 			<Target title="Release">
-				<Option output="../assets/AtGLuiEditor" prefix_auto="1" extension_auto="1" />
+				<Option output="../assets/sdlGUIEditor" prefix_auto="1" extension_auto="1" />
 				<Option working_dir="../assets/" />
 				<Option object_output="obj/Release/" />
 				<Option type="0" />
@@ -36,10 +36,10 @@
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
-					<Add option="-lAtGLui" />
-					<Add option="-lAtApp" />
-					<Add option="-lAtObjects" />
-					<Add option="-lAtUtility" />
+					<Add option="-lsdlGUI" />
+					<Add option="-lsdlApp" />
+					<Add option="-lsdlObjects" />
+					<Add option="-lsdlUtility" />
 				</Linker>
 			</Target>
 		</Build>
@@ -49,7 +49,7 @@
 			<Add directory="../" />
 		</Compiler>
 		<Linker>
-			<Add option="-lAtXml" />
+			<Add option="-lantXml" />
 			<Add option="-llua52" />
 			<Add option="-lopengl32" />
 			<Add option="-lmingw32" />
@@ -57,11 +57,11 @@
 			<Add option="-lSDL2" />
 			<Add directory="../external/lib" />
 			<Add directory="../external/bin" />
-			<Add directory="../AtApp/bin" />
-			<Add directory="../AtObjects/bin" />
-			<Add directory="../AtUtility/bin" />
+			<Add directory="../sdlApp/bin" />
+			<Add directory="../sdlObjects/bin" />
+			<Add directory="../sdlUtility/bin" />
 			<Add directory="bin" />
-			<Add directory="../AtXml/bin" />
+			<Add directory="../antXml/bin" />
 		</Linker>
 		<Unit filename="Main.cpp" />
 		<Unit filename="Resources.rc">

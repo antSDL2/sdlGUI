@@ -3,9 +3,9 @@
 #define NEOGUI_STATE_H
 
 #include <Lua/lua.hpp>
-#include <AtObjects/TextureManager.h>
-#include <AtObjects/ObjectManager.h>
-#include <AtXml/AtXml.h>
+#include <sdlObjects/TextureManager.h>
+#include <sdlObjects/ObjectManager.h>
+#include <antXml/antXml.h>
 #include "Bind.h"
 #include "Button.h"
 #include "Dialog.h"
@@ -16,9 +16,9 @@
 #include "Slider.h"
 #include "StatusBar.h"
 
-using namespace AtUtility;
+using namespace sdlUtility;
 
-namespace AtGLui {
+namespace sdlGUI {
     namespace Lists {
         static const int Binds          = 1;
         static const int Buttons        = 2;
@@ -35,25 +35,25 @@ namespace AtGLui {
         static const int DebugFocusChanged  = 1000;
     }
 
-    class State: public AtObjects::ObjectManager<Element> {
+    class State: public sdlObjects::ObjectManager<Element> {
         //Members
         protected:
             bool ScaleMode;
             std::map<std::string, bool> AddOnRequirements;
             std::map< std::string, std::vector<std::string> > FontIndex;
             std::map< std::string, std::string > StateIndex;
-            AtObjects::List<std::string, Bind, Element> Binds;
-            AtObjects::List<std::string, Button, Element> Buttons;
-            AtObjects::List<std::string, Dialog, Element> Dialogs;
-            AtObjects::List<std::string, Frame, Element> Frames;
-            AtObjects::List<std::string, List, Element> Lists;
-            AtObjects::List<std::string, Message, Element> Messages;
-            AtObjects::List<std::string, Paragraph, Element> Paragraphs;
-            AtObjects::List<std::string, Slider, Element> Sliders;
-            AtObjects::List<std::string, StatusBar, Element> StatusBars;
+            sdlObjects::List<std::string, Bind, Element> Binds;
+            sdlObjects::List<std::string, Button, Element> Buttons;
+            sdlObjects::List<std::string, Dialog, Element> Dialogs;
+            sdlObjects::List<std::string, Frame, Element> Frames;
+            sdlObjects::List<std::string, List, Element> Lists;
+            sdlObjects::List<std::string, Message, Element> Messages;
+            sdlObjects::List<std::string, Paragraph, Element> Paragraphs;
+            sdlObjects::List<std::string, Slider, Element> Sliders;
+            sdlObjects::List<std::string, StatusBar, Element> StatusBars;
             Element *Focus;
             Frame Interface;
-            AtObjects::TextureManager TextureManager;
+            sdlObjects::TextureManager TextureManager;
             Vector2 CursorPosition;
             SDL_Cursor *Cursor;
         //Access Methods
@@ -64,7 +64,7 @@ namespace AtGLui {
             std::string GetElementClass(std::string ID);
             Vector2 &GetCursorPosition();
             Element *GetFocus(bool State = false);
-            AtObjects::TextureManager *GetTextureManager();
+            sdlObjects::TextureManager *GetTextureManager();
             bool IsShown();
         //Process Methods
         public:
@@ -97,26 +97,26 @@ namespace AtGLui {
             void Who();
         protected:
             bool ElementAllowsDebug(Element *Element);
-            void GetSharedAttributes(AtXml::Tag &Tag, Element *Element);
-            void GetSpecificAttributes(AtXml::Tag &Tag, std::vector<std::string> &Data);
+            void GetSharedAttributes(antXml::Tag &Tag, Element *Element);
+            void GetSpecificAttributes(antXml::Tag &Tag, std::vector<std::string> &Data);
             void HandleEvents();
-            template <class IDType, class Type, class InheritedType> void HandleListEvents(AtObjects::List<IDType, Type, InheritedType> &List);
+            template <class IDType, class Type, class InheritedType> void HandleListEvents(sdlObjects::List<IDType, Type, InheritedType> &List);
             int InputFocus(SDL_Event &Event);
-            template <class IDType, class Type, class InheritedType> int InputList(AtObjects::List<IDType, Type, InheritedType> &List, SDL_Event &Event, InheritedType *Parent = NULL);
+            template <class IDType, class Type, class InheritedType> int InputList(sdlObjects::List<IDType, Type, InheritedType> &List, SDL_Event &Event, InheritedType *Parent = NULL);
             int InputRelatedTo(Element *Parent, SDL_Event &Event);
             void Load(std::string Name, Element *Parent = NULL, bool Embedded = false);
-            void LoadElement(Element *Element, AtXml::Tag &Tag);
+            void LoadElement(Element *Element, antXml::Tag &Tag);
             void LoadFontIndex(std::string Path);
             void LoadStateIndex(std::string Path);
             void LoadTextureIndex(std::string Path);
             void MakeElement(int List, std::string AddOn, std::string Name, Element *Parent = NULL);
-            template <class IDType, class Type, class InheritedType> void ProcessList(AtObjects::List<IDType, Type, InheritedType> &List, InheritedType *Parent = NULL);
+            template <class IDType, class Type, class InheritedType> void ProcessList(sdlObjects::List<IDType, Type, InheritedType> &List, InheritedType *Parent = NULL);
             void ProcessRelatedTo(Element *Parent);
             void PushElementCallback(Element *Element, std::string Function);
             void ReloadMessageTextures();
             bool Remove(Element *Target);
             void RemoveRelatedTo(Element *Parent);
-            template <class IDType, class Type, class InheritedType> void RenderList(float Interpolation, AtObjects::List<IDType, Type, InheritedType> &List, InheritedType *Parent = NULL);
+            template <class IDType, class Type, class InheritedType> void RenderList(float Interpolation, sdlObjects::List<IDType, Type, InheritedType> &List, InheritedType *Parent = NULL);
             void RenderRelatedTo(Element *Parent, float Interpolation);
             void ResetAllExcept(int List, Element *Parent = NULL);
             void ResetRelatedTo(Element *Parent);

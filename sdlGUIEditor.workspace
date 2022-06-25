@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_workspace_file>
+	<Workspace title="AtGLui Editor">
+		<Project filename="../sdlUtility/sdlUtility.cbp" />
+		<Project filename="../sdlApp/sdlApp.cbp" />
+		<Project filename="../sdlObjects/sdlObjects.cbp" />
+		<Project filename="sdlGUI.cbp" />
+		<Project filename="sdlGUIEditor.cbp" />
+	</Workspace>
+</CodeBlocks_workspace_file>

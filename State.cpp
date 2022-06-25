@@ -1,8 +1,8 @@
 //State.cpp
 #include "State.h"
-#include <AtUtility/Files.h>
-#include <AtUtility/Renderer.h>
-#include <AtUtility/Lua.h>
+#include <sdlUtility/Files.h>
+#include <sdlUtility/Renderer.h>
+#include <sdlUtility/Lua.h>
 #include <SDL2/SDL_ttf.h>
 #include <iostream>
 #include <sstream>
@@ -10,9 +10,9 @@
 #include <math.h>
 #include <sys/stat.h>
 
-using namespace AtUtility;
+using namespace sdlUtility;
 
-namespace AtGLui {
+namespace sdlGUI {
     void State::BrowseTextboxes() {
         if (Focus && Messages[Focus]) {
             Message *Message = Messages[Focus];
@@ -121,13 +121,13 @@ namespace AtGLui {
         if (State) return DebugFocus; else return Focus;
     }
 
-    void State::GetSharedAttributes(AtXml::Tag &Tag, Element *Element) {
+    void State::GetSharedAttributes(antXml::Tag &Tag, Element *Element) {
         if (Element) {
             int Trigger = Tag.GetTrigger();
 
             if (Trigger) {
                 while (Tag.HasAttributes()) {
-                    AtXml::Attribute Attribute = Tag.GetAttribute();
+                    antXml::Attribute Attribute = Tag.GetAttribute();
                     const std::string &AttributeValue = Attribute.GetValue();
 
                     if (Attribute == "AllowOtherInput") {
@@ -173,7 +173,7 @@ namespace AtGLui {
                     } else if (Attribute == "Color") {
                         int Color[4]; Color[0] = Color[1] = Color[2] = Color[3] = -1;
                         for (int i = 0; i<3; i++) Color[i] = Strings::StringTo<int>(AttributeValue, ' ', i);
-                        AtObjects::Renderable *Renderable = Element->GetRenderable();
+                        sdlObjects::Renderable *Renderable = Element->GetRenderable();
                         Renderable->SetIdleColor(Color);
                     } else if (Attribute == "Container") {
                         if (AttributeValue == "true") Element->SetContainer(true); else Element->SetContainer(false);
@@ -226,7 +226,7 @@ namespace AtGLui {
                         Element->GetInteractable()->EnableResizing(State);
                     } else if (Attribute == "Shape") {
                         if (AttributeValue == "Disk") {
-                            Element->GetInteractable()->Shape = AtObjects::Shapes::Disk;
+                            Element->GetInteractable()->Shape = sdlObjects::Shapes::Disk;
                         }
                     } else if (Attribute == "ShareInput") {
                         if (AttributeValue == "true") Element->SetShareInput(true); else Element->SetShareInput(false);
@@ -245,7 +245,7 @@ namespace AtGLui {
         }
    }
 
-    void State::GetSpecificAttributes(AtXml::Tag &Tag, std::vector<std::string> &Data) {
+    void State::GetSpecificAttributes(antXml::Tag &Tag, std::vector<std::string> &Data) {
         int Trigger = Tag.GetTrigger();
         std::string Text = Tag.GetText();
 
@@ -283,7 +283,7 @@ namespace AtGLui {
             }
 
             while (Tag.HasAttributes()) {
-                AtXml::Attribute Attribute = Tag.GetAttribute();
+                antXml::Attribute Attribute = Tag.GetAttribute();
                 const std::string &AttributeValue = Attribute.GetValue();
 
                 int i = -1;
@@ -406,7 +406,7 @@ namespace AtGLui {
         }
     }
 
-    AtObjects::TextureManager *State::GetTextureManager() {
+    sdlObjects::TextureManager *State::GetTextureManager() {
         return &TextureManager;
     }
 
@@ -451,7 +451,7 @@ namespace AtGLui {
     }
 
     template <class IDType, class Type, class InheritedType>
-    void State::HandleListEvents(AtObjects::List<IDType, Type, InheritedType> &List) {
+    void State::HandleListEvents(sdlObjects::List<IDType, Type, InheritedType> &List) {
         Type *Object = List.GetFirst();
 
         while (Object) {
@@ -459,7 +459,7 @@ namespace AtGLui {
             Event = Object->EventHandler();
 
             if (Event) {
-                if (Event == AtObjects::Events::Load) {
+                if (Event == sdlObjects::Events::Load) {
                     PushElementCallback(Object, "OnLoad");
 
                     Slider *Slider = Sliders[Object];
@@ -470,16 +470,16 @@ namespace AtGLui {
                     }
                 } else {
                     //Call Lua functions
-                    if (Event == AtObjects::Events::Hide) {
+                    if (Event == sdlObjects::Events::Hide) {
                         PushElementCallback(Object, "OnHide");
-                    } else if (Event == AtObjects::Events::LeftButtonDown) {
+                    } else if (Event == sdlObjects::Events::LeftButtonDown) {
                         PushElementCallback(Object, "OnInteract");
 
                         //Textbox Focus assignment
                         if (Buttons[Object] || ((Messages[Object]) && Messages[Object]->IsEditable())) {
                             SetFocus(Object);
                         }
-                    } else if (Event == AtObjects::Events::LeftButtonUp) {
+                    } else if (Event == sdlObjects::Events::LeftButtonUp) {
                         PushElementCallback(Object, "OnClick");
 
                         //List Items
@@ -501,9 +501,9 @@ namespace AtGLui {
                         if (Debug[0]&&AllowDebug) {
                             EventQueue.push_back(Events::DebugFocusChanged);
                         }
-                    } else if (Event == AtObjects::Events::MouseIn) {
+                    } else if (Event == sdlObjects::Events::MouseIn) {
                         PushElementCallback(Object, "OnMouseIn");
-                    } else if (Event == AtObjects::Events::MouseOut) {
+                    } else if (Event == sdlObjects::Events::MouseOut) {
                         //Reorder Mouse Out
                         std::string Back;
                         if (Scripts.size() > 0) {
@@ -522,24 +522,24 @@ namespace AtGLui {
                             class List *ParentList = Lists[Object->GetParent()];
 
                             if (ParentList->GetSelectedItem() == Object) {
-                                AtObjects::Renderable *Renderable = Object->GetRenderable();
+                                sdlObjects::Renderable *Renderable = Object->GetRenderable();
                                 if (Renderable) {
-                                    Renderable->SetColor(AtObjects::Color::Hovered);
+                                    Renderable->SetColor(sdlObjects::Color::Hovered);
                                 }
                             }
                         }
-                    } else if (Event == AtObjects::Events::Move) {
+                    } else if (Event == sdlObjects::Events::Move) {
                         PushElementCallback(Object, "OnMove");
-                    } else if (Event == AtObjects::Events::RightButtonDown) {
+                    } else if (Event == sdlObjects::Events::RightButtonDown) {
                         PushElementCallback(Object, "OnInteract");
 
                         //Textbox Focus assignment
                         if (Buttons[Object] || ((Messages[Object]) && Messages[Object]->IsEditable())) {
                             SetFocus(Object);
                         }
-                    } else if (Event == AtObjects::Events::RightButtonUp) {
+                    } else if (Event == sdlObjects::Events::RightButtonUp) {
                         PushElementCallback(Object, "OnRightClick");
-                    } else if (Event == AtObjects::Events::Show) {
+                    } else if (Event == sdlObjects::Events::Show) {
                         PushElementCallback(Object, "OnShow");
 
                         ResetRelatedTo(Object);
@@ -559,9 +559,9 @@ namespace AtGLui {
                         if (Dialog) {
                             Dialog->SetFocused(true);
                         }
-                    } else if (Event == AtObjects::Events::Stop) {
+                    } else if (Event == sdlObjects::Events::Stop) {
                         PushElementCallback(Object, "OnStop");
-                    } else if (Event == AtObjects::Events::ValueChange) {
+                    } else if (Event == sdlObjects::Events::ValueChange) {
                         PushElementCallback(Object, "OnValueChange");
 
                         if (Messages[Object]) {
@@ -573,7 +573,7 @@ namespace AtGLui {
                                 ParentList->UpdateSize();
                             }
                         }
-                    } else if (Event == AtObjects::Events::Return) {
+                    } else if (Event == sdlObjects::Events::Return) {
                         PushElementCallback(Object, "OnReturn");
                     } else {
                         if (Binds[Object]) {
@@ -663,8 +663,8 @@ namespace AtGLui {
             if (Event.type == SDL_KEYDOWN) {
                 if (Focus->IsShown(true) && (Event.key.keysym.scancode == SDL_SCANCODE_RETURN || Event.key.keysym.scancode == SDL_SCANCODE_KP_ENTER)) {
                     //Call Name:OnReturn();
-                    Focus->PushEvent(AtObjects::Events::Return);
-                    Focus->PushEvent(AtObjects::Events::LeftButtonUp, true);
+                    Focus->PushEvent(sdlObjects::Events::Return);
+                    Focus->PushEvent(sdlObjects::Events::LeftButtonUp, true);
 
                     Input = 111;
 
@@ -681,7 +681,7 @@ namespace AtGLui {
     }
 
     template <class IDType, class Type, class InheritedType>
-    int State::InputList(AtObjects::List<IDType, Type, InheritedType> &List, SDL_Event &Event, InheritedType *Parent) {
+    int State::InputList(sdlObjects::List<IDType, Type, InheritedType> &List, SDL_Event &Event, InheritedType *Parent) {
         int Input = 0;
 
         if (!Parent) Parent = &Interface;
@@ -701,17 +701,17 @@ namespace AtGLui {
                         //if (Input && Object->ID() == "EquipmentFrame") std::cout << Input << std::endl;
                         if (Input) {
                             if (Object->CopiesInput()) {
-                                if (Input == AtObjects::Events::LeftButtonUp) {
-                                    Object->PushEvent(AtObjects::Events::LeftButtonUp);
-                                } else if (Input == AtObjects::Events::LeftButtonDown) {
+                                if (Input == sdlObjects::Events::LeftButtonUp) {
+                                    Object->PushEvent(sdlObjects::Events::LeftButtonUp);
+                                } else if (Input == sdlObjects::Events::LeftButtonDown) {
                                     if (List.GetInputResponse() > 0) List.MoveToLast(Object); else if (List.GetInputResponse() < 0) List.SwapItems(List.GetFirst(), Object);
-                                    Object->PushEvent(AtObjects::Events::LeftButtonDown);
-                                } else if (Input == AtObjects::Events::RightButtonDown) {
-                                    Object->PushEvent(AtObjects::Events::RightButtonDown);
-                                } else if (Input == AtObjects::Events::RightButtonUp) {
-                                    Object->PushEvent(AtObjects::Events::RightButtonUp);
-                                } else if (Input == AtObjects::Events::MouseIn) {
-                                    Object->PushEvent(AtObjects::Events::MouseIn);
+                                    Object->PushEvent(sdlObjects::Events::LeftButtonDown);
+                                } else if (Input == sdlObjects::Events::RightButtonDown) {
+                                    Object->PushEvent(sdlObjects::Events::RightButtonDown);
+                                } else if (Input == sdlObjects::Events::RightButtonUp) {
+                                    Object->PushEvent(sdlObjects::Events::RightButtonUp);
+                                } else if (Input == sdlObjects::Events::MouseIn) {
+                                    Object->PushEvent(sdlObjects::Events::MouseIn);
                                 }
                             } else Object->ResetInput();
                         }
@@ -722,7 +722,7 @@ namespace AtGLui {
 
                         Input = Object->Input(Event, (Debug[0]&&AllowDebug));
 
-                        if (Input == AtObjects::Events::LeftButtonDown || Input == AtObjects::Events::RightButtonDown) {
+                        if (Input == sdlObjects::Events::LeftButtonDown || Input == sdlObjects::Events::RightButtonDown) {
                             //DebugFocus assignment
                             SetFocus(Object, true);
 
@@ -734,19 +734,19 @@ namespace AtGLui {
                                 if (!Parent->IsDisabled()) {
                                     //MouseIn/MouseOut
                                     if (Parent->IsHovered()) {
-                                        Object->PushEvent(AtObjects::Events::MouseIn);
+                                        Object->PushEvent(sdlObjects::Events::MouseIn);
                                     } else {
-                                        Object->PushEvent(AtObjects::Events::MouseOut);
+                                        Object->PushEvent(sdlObjects::Events::MouseOut);
                                     }
                                 }
 
                                 if (Parent->IsClicked(1)) {
-                                    Object->PushEvent(AtObjects::Events::LeftButtonDown);
+                                    Object->PushEvent(sdlObjects::Events::LeftButtonDown);
                                 } else if (Parent->IsClicked(3)) {
-                                    Object->PushEvent(AtObjects::Events::RightButtonDown);
+                                    Object->PushEvent(sdlObjects::Events::RightButtonDown);
                                 } else {
-                                    if (Object->IsClicked(1)) Object->PushEvent(AtObjects::Events::LeftButtonUp);
-                                    if (Object->IsClicked(3)) Object->PushEvent(AtObjects::Events::RightButtonUp);
+                                    if (Object->IsClicked(1)) Object->PushEvent(sdlObjects::Events::LeftButtonUp);
+                                    if (Object->IsClicked(3)) Object->PushEvent(sdlObjects::Events::RightButtonUp);
                                 }
                             }
                         }
@@ -827,7 +827,7 @@ namespace AtGLui {
         AddOnRequirements[StateName] = true;
 
         if (!Frames[StateName+"."+StateName] || Embedded) {
-            AtXml::File File;
+            antXml::File File;
             if (File.Parse(Location)) {
                 std::cout << "\tLoading: " << StateName << std::endl;
                 std::string Scripts;
@@ -837,7 +837,7 @@ namespace AtGLui {
 
                 bool BindingsTagOpen = false, FontsTagOpen = false, ScriptsTagOpen = false, TexturesTagOpen = false;
                 while (File.HasTags()) {
-                    AtXml::Tag Tag = File.GetTag();
+                    antXml::Tag Tag = File.GetTag();
                     int Trigger = Tag.GetTrigger();
                     std::string Text = Tag.GetText();
 
@@ -846,7 +846,7 @@ namespace AtGLui {
 
                     if (Trigger) {
                         while (Tag.HasAttributes()) {
-                            AtXml::Attribute Attribute = Tag.GetAttribute();
+                            antXml::Attribute Attribute = Tag.GetAttribute();
                             const std::string &AttributeValue = Attribute.GetValue();
 
                             if (Attribute == "Name") {
@@ -867,11 +867,11 @@ namespace AtGLui {
                                 GetSpecificAttributes(Tag, Data);
                                 FontIndex[Name] = Data;
                             }
-                        } else if (Tag == "Fonts" && Trigger == AtXml::Trigger::Close) {
+                        } else if (Tag == "Fonts" && Trigger == antXml::Trigger::Close) {
                             FontsTagOpen = false;
                         }
                     } else if (ScriptsTagOpen) {
-                        if (Tag == "Scripts" && Trigger == AtXml::Trigger::Close) {
+                        if (Tag == "Scripts" && Trigger == antXml::Trigger::Close) {
                             ScriptsTagOpen = false;
                         } else {
                             if (Parent) {
@@ -894,26 +894,26 @@ namespace AtGLui {
                                 GetSpecificAttributes(Tag, Data);
                                 TextureManager.SetTextureIndex(Name, Data);
                             }
-                        } else if (Tag == "Textures" && Trigger == AtXml::Trigger::Close) {
+                        } else if (Tag == "Textures" && Trigger == antXml::Trigger::Close) {
                             TexturesTagOpen = false;
                         }
                     } else {
                         if (Tag == "Bindings") {
-                            if (Trigger == AtXml::Trigger::Open) {
+                            if (Trigger == antXml::Trigger::Open) {
                                 if (Text != "") {
                                     this->Load(Text, Parent);
                                 } else {
                                     BindingsTagOpen = true;
                                 }
-                            } else if (Trigger == AtXml::Trigger::Close) BindingsTagOpen = false;
+                            } else if (Trigger == antXml::Trigger::Close) BindingsTagOpen = false;
                         } else if (Tag == "Embed") {
-                            if (Trigger == AtXml::Trigger::Open) {
+                            if (Trigger == antXml::Trigger::Open) {
                                 if (Text != "") {
                                     this->Load(Text, Parent, true);
                                 }
                             }
                         } else if (Tag == "Fonts") {
-                            if (Trigger == AtXml::Trigger::Open) {
+                            if (Trigger == antXml::Trigger::Open) {
                                 if (Text != "") {
                                     this->Load(Text, Parent);
                                 } else {
@@ -921,17 +921,17 @@ namespace AtGLui {
                                 }
                             }
                         } else if (Tag == "Load") {
-                            if (Trigger == AtXml::Trigger::Open) {
+                            if (Trigger == antXml::Trigger::Open) {
                                 if (Text != "") {
                                     this->Load(Text);
                                 }
                             }
                         } else if (Tag == "Scripts") {
-                            if (Parent && Trigger == AtXml::Trigger::Open) {
+                            if (Parent && Trigger == antXml::Trigger::Open) {
                                 ScriptsTagOpen = true;
                             }
                         } else if (Tag == "Textures") {
-                            if (Trigger == AtXml::Trigger::Open) {
+                            if (Trigger == antXml::Trigger::Open) {
                                 if (Text != "") {
                                     this->Load(Text, Parent);
                                 } else {
@@ -986,7 +986,7 @@ namespace AtGLui {
                                         Button *Button = Buttons[AddOn+"."+Name];
                                         if (Button) {
                                             LoadElement(Button, Tag);
-                                            if (Trigger == AtXml::Trigger::Open) Parent = Button;
+                                            if (Trigger == antXml::Trigger::Open) Parent = Button;
                                         }
                                     } else if (Buttons[Parent]) Parent = Parent->GetParent();
                                 } else if (Tag == "Dialog") {
@@ -995,7 +995,7 @@ namespace AtGLui {
                                         Dialog *Dialog = Dialogs[AddOn+"."+Name];
                                         if (Dialog) {
                                             LoadElement(Dialog, Tag);
-                                            if (Trigger == AtXml::Trigger::Open) Parent = Dialog;
+                                            if (Trigger == antXml::Trigger::Open) Parent = Dialog;
                                         }
                                     } else if (Dialogs[Parent]) Parent = Parent->GetParent();
                                 } else if (Tag == "Frame" || Tag == "Image" || Tag == "iFrame") {
@@ -1007,7 +1007,7 @@ namespace AtGLui {
                                                 if (Tag == "Image") Frame->SetContainer(false); else if (Tag == "iFrame") Frame->GetInteractable()->EnableInteraction(true);
                                                 if (!Parent) Frame->ResizeTo(Resolution.X(), Resolution.Y());
                                                 LoadElement(Frame, Tag);
-                                                if (Trigger == AtXml::Trigger::Open) Parent = Frame;
+                                                if (Trigger == antXml::Trigger::Open) Parent = Frame;
                                             }
                                         }
                                     } else if (Frames[Parent]) {
@@ -1022,7 +1022,7 @@ namespace AtGLui {
                                                 Frame->SetEmbedded(true);
                                             } else Lua::ExecuteScript(Lua, Name + " = Frame.New('" + AddOn + "." + Name + "')");
                                             LoadElement(Frame, Tag);
-                                            if (Trigger == AtXml::Trigger::Open) Parent = Frame;
+                                            if (Trigger == antXml::Trigger::Open) Parent = Frame;
                                         }
                                     } else if (Frames[Parent]) {
                                         if (Scripts != "") {
@@ -1035,7 +1035,7 @@ namespace AtGLui {
                                         List *List = Lists[AddOn+"."+Name];
                                         if (List) {
                                             LoadElement(List, Tag);
-                                            if (Trigger == AtXml::Trigger::Open) Parent = List;
+                                            if (Trigger == antXml::Trigger::Open) Parent = List;
                                         }
                                     } else if (Lists[Parent]) Parent = Parent->GetParent();
                                 } else if (Tag == "Message") {
@@ -1044,7 +1044,7 @@ namespace AtGLui {
                                         Message *Message = Messages[AddOn+"."+Name];
                                         if (Message) {
                                             LoadElement(Message, Tag);
-                                            if (Trigger == AtXml::Trigger::Open) Parent = Message;
+                                            if (Trigger == antXml::Trigger::Open) Parent = Message;
                                         }
                                     } else if (Messages[Parent]) Parent = Parent->GetParent();
                                 } else if (Tag == "Paragraph") {
@@ -1053,7 +1053,7 @@ namespace AtGLui {
                                         Paragraph *Paragraph = Paragraphs[AddOn+"."+Name];
                                         if (Paragraph) {
                                             LoadElement(Paragraph, Tag);
-                                            if (Trigger == AtXml::Trigger::Open) Parent = Paragraph;
+                                            if (Trigger == antXml::Trigger::Open) Parent = Paragraph;
                                         }
                                     } else if (Paragraphs[Parent]) Parent = Parent->GetParent();
                                 } else if (Tag == "Slider") {
@@ -1062,7 +1062,7 @@ namespace AtGLui {
                                         Slider *Slider = Sliders[AddOn+"."+Name];
                                         if (Slider) {
                                             LoadElement(Slider, Tag);
-                                            if (Trigger == AtXml::Trigger::Open) Parent = Slider;
+                                            if (Trigger == antXml::Trigger::Open) Parent = Slider;
                                         }
                                     } else if (Sliders[Parent]) Parent = Parent->GetParent();
                                 } else if (Tag == "StatusBar") {
@@ -1071,7 +1071,7 @@ namespace AtGLui {
                                         StatusBar *StatusBar = StatusBars[AddOn+"."+Name];
                                         if (StatusBar) {
                                             LoadElement(StatusBar, Tag);
-                                            if (Trigger == AtXml::Trigger::Open) Parent = StatusBar;
+                                            if (Trigger == antXml::Trigger::Open) Parent = StatusBar;
                                         }
                                     } else if (StatusBars[Parent]) Parent = Parent->GetParent();
                                 } else std::cerr << "(Interface/State.cpp) Load(): Uknown tag '" << Tag.GetName() << "' in " << Location << "." << std::endl;
@@ -1103,7 +1103,7 @@ namespace AtGLui {
     void State::LoadCursor(std::string Name) {
         if (Cursor) SDL_FreeCursor(Cursor);
 
-        AtObjects::Texture *Texture = TextureManager.LoadTexture(Name);
+        sdlObjects::Texture *Texture = TextureManager.LoadTexture(Name);
         if (Texture) {
             GLubyte Data[4*Texture->GetWidth()*Texture->GetHeight()];
             Texture->GetData(Data);
@@ -1115,7 +1115,7 @@ namespace AtGLui {
         }
     }
 
-    void State::LoadElement(Element *Element, AtXml::Tag &Tag) {
+    void State::LoadElement(Element *Element, antXml::Tag &Tag) {
         std::vector<std::string> Data;
 
         if (Element) {
@@ -1460,17 +1460,17 @@ namespace AtGLui {
         while (it!=DirectoryList.end()) {
             std::string Name = it->substr(0, it->size()-FileType.size());
 
-            AtXml::File File;
+            antXml::File File;
 
             if (File.Parse(Path+*it, "Font")) {
                 std::vector<std::string> Data;
 
                 while (File.HasTags()) {
-                    AtXml::Tag Tag = File.GetTag();
+                    antXml::Tag Tag = File.GetTag();
                     int Trigger = Tag.GetTrigger();
                     const std::string Text = Tag.GetText();
 
-                    if (Tag == "Font" && Trigger == AtXml::Trigger::Open) {
+                    if (Tag == "Font" && Trigger == antXml::Trigger::Open) {
                         GetSpecificAttributes(Tag, Data);
                         FontIndex[Name] = Data;
                         if (Debug[1]) std::cout << "   Indexed: " << Path+*it << std::endl;
@@ -1515,8 +1515,8 @@ namespace AtGLui {
                     Message->SetSize(Paragraph->GetSize());
                     Message->SetText(Word);
 
-                    AtObjects::Renderable *ParagraphRenderable = Paragraph->GetRenderable();
-                    AtObjects::Renderable *Renderable = Message->GetRenderable();
+                    sdlObjects::Renderable *ParagraphRenderable = Paragraph->GetRenderable();
+                    sdlObjects::Renderable *Renderable = Message->GetRenderable();
                     Renderable->SetIdleColor(ParagraphRenderable->GetColor());
 
                     Message->EnableScaling(true);
@@ -1594,17 +1594,17 @@ namespace AtGLui {
         while (it!=DirectoryList.end()) {
             std::string Name = it->substr(0, it->size()-FileType.size());
 
-            AtXml::File File;
+            antXml::File File;
 
             if (File.Parse(Path+*it, "Texture")) {
                 std::vector<std::string> Data;
 
                 while (File.HasTags()) {
-                    AtXml::Tag Tag = File.GetTag();
+                    antXml::Tag Tag = File.GetTag();
                     int Trigger = Tag.GetTrigger();
                     const std::string Text = Tag.GetText();
 
-                    if (Tag == "Texture" && Trigger == AtXml::Trigger::Open) {
+                    if (Tag == "Texture" && Trigger == antXml::Trigger::Open) {
                         GetSpecificAttributes(Tag, Data);
                         TextureManager.SetTextureIndex(Name, Data);
                         if (Debug[1]) std::cout << "   Indexed: " << Path+*it << std::endl;
@@ -1621,7 +1621,7 @@ namespace AtGLui {
         if (!Objects[AddOn+"."+Name]) {
             MakeElement(ListID, AddOn, Name, Parent);
 
-            AtXml::Tag Tag;
+            antXml::Tag Tag;
             Element *Element = Objects[AddOn+"."+Name];
             LoadElement(Element, Tag);
         }
@@ -1750,7 +1750,7 @@ namespace AtGLui {
     }
 
     template <class IDType, class Type, class InheritedType>
-    void State::ProcessList(AtObjects::List<IDType, Type, InheritedType> &List, InheritedType *Parent) {
+    void State::ProcessList(sdlObjects::List<IDType, Type, InheritedType> &List, InheritedType *Parent) {
         Type *Object = List.GetFirst();
 
         if (!Parent) Parent = &Interface;
@@ -1826,9 +1826,9 @@ namespace AtGLui {
         while (Message) {
             Message->EnableScaling(true);
 
-            AtObjects::Renderable *Renderable = Message->GetRenderable();
-            AtObjects::Texture *Texture = Renderable->GetTexture();
-            AtObjects::Texture *NewTexture = TextureManager.LoadTextureFromText(Message->GetFont(), Message->GetSize(), Message->GetText(), Message->GetStyles());
+            sdlObjects::Renderable *Renderable = Message->GetRenderable();
+            sdlObjects::Texture *Texture = Renderable->GetTexture();
+            sdlObjects::Texture *NewTexture = TextureManager.LoadTextureFromText(Message->GetFont(), Message->GetSize(), Message->GetText(), Message->GetStyles());
 
             if (Texture != NewTexture) {
                 Renderable->SetTexture(NewTexture);
@@ -1997,7 +1997,7 @@ namespace AtGLui {
     }
 
     template <class IDType, class Type, class InheritedType>
-    void State::RenderList(float Interpolation, AtObjects::List<IDType, Type, InheritedType> &List, InheritedType *Parent) {
+    void State::RenderList(float Interpolation, sdlObjects::List<IDType, Type, InheritedType> &List, InheritedType *Parent) {
         Type *Object = List.GetFirst();
 
         if (!Parent) Parent = &Interface;
@@ -2158,13 +2158,13 @@ namespace AtGLui {
                     int Color[4]; Color[0] = Color[1] = Color[2] = Color[3] = 255;
                     for (int i = 0; i<3; i++) Color[i] = Strings::StringTo<int>(Data[2], ' ', i);
 
-                    AtObjects::Renderable *Renderable = Message->GetRenderable();
+                    sdlObjects::Renderable *Renderable = Message->GetRenderable();
                     Renderable->SetIdleColor(Color);
                 }
 
                 //Transparency
                 if (Data[3] != "") {
-                    AtObjects::Renderable *Renderable = Message->GetRenderable();
+                    sdlObjects::Renderable *Renderable = Message->GetRenderable();
                     Renderable->SetTransparency(Strings::StringTo<float>(Data[3]));
                 }
 
@@ -2173,7 +2173,7 @@ namespace AtGLui {
                     int HoverColor[4]; HoverColor[0] = HoverColor[1] = HoverColor[2] = 255; HoverColor[3] = 255;
                     for (int i = 0; i<3; i++) HoverColor[i] = Strings::StringTo<int>(Data[4], ' ', i);
 
-                    AtObjects::Renderable *Renderable = Message->GetRenderable();
+                    sdlObjects::Renderable *Renderable = Message->GetRenderable();
                     Renderable->SetHoverColor(HoverColor);
                 }
 
@@ -2244,7 +2244,7 @@ namespace AtGLui {
                         Color[3] = Strings::StringTo<float>(Data[3])*255.0f/100.0f;
                     }
 
-                    AtObjects::Renderable *Renderable = Paragraph->GetRenderable();
+                    sdlObjects::Renderable *Renderable = Paragraph->GetRenderable();
                     Renderable->SetIdleColor(Color);
                 }
 
@@ -2256,7 +2256,7 @@ namespace AtGLui {
                     //Transparency
                     //TEMP TODO Fix transparency for HoverColor
 
-                    AtObjects::Renderable *Renderable = Paragraph->GetRenderable();
+                    sdlObjects::Renderable *Renderable = Paragraph->GetRenderable();
                     Renderable->SetHoverColor(HoverColor);
                 }
 

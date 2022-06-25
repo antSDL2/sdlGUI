@@ -3,7 +3,7 @@
 #define NEOGUI_BIND_H
 
 #include "Element.h"
-namespace AtGLui {
+namespace sdlGUI {
     class Bind: public Element {
         //Members
         public:

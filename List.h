@@ -6,9 +6,9 @@
 #include "Message.h"
 #include <list>
 
-using namespace AtUtility;
+using namespace sdlUtility;
 
-namespace AtGLui {
+namespace sdlGUI {
     namespace Lists {
         static const int Display        = 0;
         static const int Selection      = 1;

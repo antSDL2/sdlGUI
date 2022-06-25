@@ -3,7 +3,7 @@
 #define NEOGUI_DIALOG_H
 
 #include "Element.h"
-namespace AtGLui {
+namespace sdlGUI {
     class Dialog: public Element {
         //Members
         public:

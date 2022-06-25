@@ -3,12 +3,12 @@
 #define NEOGUI_ELEMENT_H
 
 #include <SDL2/SDL.h>
-#include <AtObjects/Object.h>
-#include <AtObjects/Renderable.h>
+#include <sdlObjects/Object.h>
+#include <sdlObjects/Renderable.h>
 
-using namespace AtUtility;
+using namespace sdlUtility;
 
-namespace AtGLui {
+namespace sdlGUI {
     namespace Events {
         static const int Press              = 100;
         static const int Release            = 101;
@@ -19,7 +19,7 @@ namespace AtGLui {
         const int Vertical                  = 2;
     }
 
-    class Element: public AtObjects::Object {
+    class Element: public sdlObjects::Object {
         //Members
         protected:
             Element *Parent;

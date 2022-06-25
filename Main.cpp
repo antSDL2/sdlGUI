@@ -2,16 +2,16 @@
 #include <time.h>
 #include <fstream>
 
-#include <AtApp/API.h>
-#include <AtApp/State.h>
+#include <sdlApp/API.h>
+#include <sdlApp/State.h>
 
-#include <AtUtility/Renderer.h>
-#include <AtUtility/Vector2.h>
+#include <sdlUtility/Renderer.h>
+#include <sdlUtility/Vector2.h>
 
 #include "API.h"
 #include "State.h"
 
-using namespace AtUtility;
+using namespace sdlUtility;
 
 int main (int argc, char *argv[]) {
     #ifdef DEBUG
@@ -39,8 +39,8 @@ int main (int argc, char *argv[]) {
     }
 
     //Application Instance
-    AtApp::State Application(Lua, "GLui Editor", "Graphics/Engine.png");
-    AtApp::API::Load(Lua, &Application);
+    sdlApp::State Application(Lua, "GLui Editor", "Graphics/Engine.png");
+    sdlApp::API::Load(Lua, &Application);
     Application.SetResolution(800, 600);
     Application.AllowResize(true);
 
@@ -50,8 +50,8 @@ int main (int argc, char *argv[]) {
     }
 
     //Interface Instance
-    AtGLui::State Interface(Lua);
-    AtGLui::API::Load(Lua, &Interface);
+    sdlGUI::State Interface(Lua);
+    sdlGUI::API::Load(Lua, &Interface);
     Interface.SetScaleMode(false);
     Interface.Initialize("Interface/", "Graphics/", "User/");
     Interface.LoadState("AtGUIEditor");

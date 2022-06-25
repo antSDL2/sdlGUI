@@ -3,7 +3,7 @@
 #define NEOGUI_FRAME_H
 
 #include "Element.h"
-namespace AtGLui {
+namespace sdlGUI {
     class Frame: public Element {
         //Members
         public:

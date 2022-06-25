@@ -4,7 +4,7 @@
 
 #include "Element.h"
 #include "Frame.h"
-namespace AtGLui {
+namespace sdlGUI {
     namespace Sliders {
         static const int Standard    = 1;
         static const int Drag        = 2;

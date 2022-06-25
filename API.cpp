@@ -1,9 +1,9 @@
 //API.cpp
 #include "API.h"
 
-namespace AtGLui {
-    template <> std::string AtObjects::API<State, Element>::ObjectManagerName = "Interface";
-    template <> State* AtObjects::API<State, Element>::ObjectManager = NULL;
+namespace sdlGUI {
+    template <> std::string sdlObjects::API<State, Element>::ObjectManagerName = "Interface";
+    template <> State* sdlObjects::API<State, Element>::ObjectManager = NULL;
 
     const luaL_Reg API::InterfaceMethods[] = {
         {"GetCursorX", API::GetCursorX},

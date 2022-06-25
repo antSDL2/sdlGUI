@@ -13,7 +13,7 @@ static const int SDL_CUSTOM_X2MB       = 1008;
 static const int SDL_CUSTOM_WHEELUP    = 1009;
 static const int SDL_CUSTOM_WHEELDOWN  = 1010;
 
-namespace AtGLui {
+namespace sdlGUI {
     Bind::Bind() {
         Next = Previous = NULL;
         Key = Modifier = SDL_SCANCODE_UNKNOWN;

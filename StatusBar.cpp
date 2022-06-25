@@ -1,7 +1,7 @@
 //StatusBar.cpp
 #include "StatusBar.h"
 
-namespace AtGLui {
+namespace sdlGUI {
     float StatusBar::GetStatus() {
         return Status;
     }

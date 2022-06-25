@@ -3,11 +3,11 @@
 #include <iostream>
 #include <sstream>
 #include <stdlib.h>
-#include <AtUtility/Renderer.h>
+#include <sdlUtility/Renderer.h>
 
-using namespace AtUtility;
+using namespace sdlUtility;
 
-namespace AtGLui {
+namespace sdlGUI {
     void Message::Add(char C) {
         if (!CharacterLimit || (CharacterLimit && (signed)Value.length() < CharacterLimit)) {
             std::string String;
@@ -94,7 +94,7 @@ namespace AtGLui {
         if (Focused&&Editable) {
             if (Event.type == SDL_TEXTINPUT) {
                 Add(*Event.text.text);
-                EventQueue.push_back(AtObjects::Events::ValueChange);
+                EventQueue.push_back(sdlObjects::Events::ValueChange);
                 Input = 501;
             } else if (Event.type == SDL_KEYDOWN) {
                 HoldKey(Event.key.keysym.scancode);
@@ -110,7 +110,7 @@ namespace AtGLui {
                         Erase();
                     }
 
-                    EventQueue.push_back(AtObjects::Events::ValueChange);
+                    EventQueue.push_back(sdlObjects::Events::ValueChange);
 
                     Input = 502;
                 } else if (Event.key.keysym.scancode == SDL_SCANCODE_LEFT) {
@@ -139,7 +139,7 @@ namespace AtGLui {
                         Erase(1);
                     }
 
-                    EventQueue.push_back(AtObjects::Events::ValueChange);
+                    EventQueue.push_back(sdlObjects::Events::ValueChange);
 
                     Input = 505;
                 }
@@ -221,7 +221,7 @@ namespace AtGLui {
             float TargetWidth = Width();
             float TargetHeight = Height();
 
-            AtObjects::Texture *Texture = Renderable.GetTexture();
+            sdlObjects::Texture *Texture = Renderable.GetTexture();
 
             //TEMP ? PERFORMANCE CONCERN
             if (ShadowColor[0] > -1) {
@@ -294,7 +294,7 @@ namespace AtGLui {
 
     void Message::SetText(std::string Text) {
         if (Text != Value) {
-            EventQueue.push_back(AtObjects::Events::ValueChange);
+            EventQueue.push_back(sdlObjects::Events::ValueChange);
         }
 
         Value = Text;

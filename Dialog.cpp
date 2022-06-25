@@ -3,9 +3,9 @@
 #include <iostream>
 #include <math.h>
 
-using namespace AtUtility;
+using namespace sdlUtility;
 
-namespace AtGLui {
+namespace sdlGUI {
     Dialog::Dialog() {
         Next = Previous = NULL;
         CopyInput = true; Focused = false;

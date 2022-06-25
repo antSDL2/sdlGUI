@@ -5,9 +5,9 @@
 #include "Element.h"
 #include "Frame.h"
 
-using namespace AtUtility;
+using namespace sdlUtility;
 
-namespace AtGLui {
+namespace sdlGUI {
     class Message: public Element {
         //Members
         public:

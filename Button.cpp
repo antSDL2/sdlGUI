@@ -2,9 +2,9 @@
 #include "Button.h"
 #include <iostream>
 
-using namespace AtUtility;
+using namespace sdlUtility;
 
-namespace AtGLui {
+namespace sdlGUI {
     Button::Button() {
         Next = Previous = NULL;
         Type = Buttons::Standard;
@@ -64,7 +64,7 @@ namespace AtGLui {
                 if (Checked) Renderable.SetTile(4); else Renderable.SetTile(2);
             }
 
-            if (IsHovered()) Renderable.SetColor(AtObjects::Color::Hovered);
+            if (IsHovered()) Renderable.SetColor(sdlObjects::Color::Hovered);
         }
     }
 
@@ -79,7 +79,7 @@ namespace AtGLui {
                 if (Checked) Renderable.SetTile(3); else Renderable.SetTile(1);
             }
 
-            if (!IsHovered()) Renderable.SetColor(AtObjects::Color::Idle);
+            if (!IsHovered()) Renderable.SetColor(sdlObjects::Color::Idle);
         }
     }
 

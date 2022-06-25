@@ -4,7 +4,7 @@
 
 #include "List.h"
 #include "Message.h"
-namespace AtGLui {
+namespace sdlGUI {
     namespace Buttons {
         static const int Standard = 0;
         static const int Checkbox = 1;

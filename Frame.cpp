@@ -1,9 +1,9 @@
 //Frame.cpp
 #include "Frame.h"
 
-using namespace AtUtility;
+using namespace sdlUtility;
 
-namespace AtGLui {
+namespace sdlGUI {
     bool Frame::AllowsDebug() {
         return AllowDebug;
     }

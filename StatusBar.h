@@ -3,7 +3,7 @@
 #define NEOGUI_STATUSBAR_H
 
 #include "Element.h"
-namespace AtGLui {
+namespace sdlGUI {
     class StatusBar: public Element {
         //Members
         public:

@@ -3,12 +3,12 @@
 #define NEOINTERFACE_API_H
 
 #include "State.h"
-#include <AtObjects/API.h>
+#include <sdlObjects/API.h>
 
-using namespace AtUtility;
+using namespace sdlUtility;
 
-namespace AtGLui {
-    class API: protected AtObjects::API<State, Element> {
+namespace sdlGUI {
+    class API: protected sdlObjects::API<State, Element> {
         //Members
         protected:
             static const luaL_Reg InterfaceMethods[], ElementMethods[];
@@ -657,7 +657,7 @@ namespace AtGLui {
                 int Results = 0;
 
                 if (ObjectManager) {
-                    AtObjects::TextureManager *TextureManager = ObjectManager->GetTextureManager();
+                    sdlObjects::TextureManager *TextureManager = ObjectManager->GetTextureManager();
                     TextureManager->ReleaseTextures();
                 }
 
@@ -856,7 +856,7 @@ namespace AtGLui {
                 if (Arguments == 1) {
                     Element *Object = GetObject<Element>(Lua);
                     if (Object) {
-                        AtObjects::Renderable *Renderable = Object->GetRenderable();
+                        sdlObjects::Renderable *Renderable = Object->GetRenderable();
                         Texture = Renderable->GetTextureID();
                     }
                 } else std::cerr << "(Interface/API.h) ElementGetTexture(): Function called with invalid number of arguments (" << Arguments << ")." << std::endl;
@@ -1045,7 +1045,7 @@ namespace AtGLui {
 
                     Element *Object = GetObject<Element>(Lua);
                     if (Object) {
-                        AtObjects::Renderable *Renderable = Object->GetRenderable();
+                        sdlObjects::Renderable *Renderable = Object->GetRenderable();
                         Renderable->SetIdleColor(Color);
                     }
                 } else std::cerr << "(Interface/API.h) ElementSetColor(): Function called with invalid number of arguments (" << Arguments << ")." << std::endl;
@@ -1189,7 +1189,7 @@ namespace AtGLui {
 
                         Element *Object = GetObject<Element>(Lua);
                         if (Object) {
-                            AtObjects::Renderable *Renderable = Object->GetRenderable();
+                            sdlObjects::Renderable *Renderable = Object->GetRenderable();
                             Renderable->SetTransparency(Transparency);
                         }
                     } else std::cerr << "(Interface/API.h) ElementSetTransparency(): Function called with invalid number of arguments (" << Arguments << ")." << std::endl;

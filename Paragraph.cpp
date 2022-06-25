@@ -1,9 +1,9 @@
 //Paragraph.cpp
 #include "Paragraph.h"
 
-using namespace AtUtility;
+using namespace sdlUtility;
 
-namespace AtGLui {
+namespace sdlGUI {
     std::string Paragraph::GetFont() {
         return Font;
     }

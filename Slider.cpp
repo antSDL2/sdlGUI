@@ -2,9 +2,9 @@
 #include "Slider.h"
 #include <iostream>
 
-using namespace AtUtility;
+using namespace sdlUtility;
 
-namespace AtGLui {
+namespace sdlGUI {
     int Slider::GetOrientation() {
         return Orientation;
     }
@@ -148,14 +148,14 @@ namespace AtGLui {
 
     void Slider::SetStatus(float Status) {
         this->Status = Status;
-        EventQueue.push_back(AtObjects::Events::ValueChange);
+        EventQueue.push_back(sdlObjects::Events::ValueChange);
     }
 
     void Slider::SetSliderValue(float Value) {
         if (MaximumValue != MinimumValue) {
             Status = (Value-MinimumValue)/(MaximumValue-MinimumValue);
             if (Status > 1) Status = 1; else if (Status < 0) Status = 0;
-            EventQueue.push_back(AtObjects::Events::ValueChange);
+            EventQueue.push_back(sdlObjects::Events::ValueChange);
         }
     }
 

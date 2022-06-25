@@ -4,9 +4,9 @@
 
 #include "List.h"
 
-using namespace AtUtility;
+using namespace sdlUtility;
 
-namespace AtGLui {
+namespace sdlGUI {
     class Paragraph: public List {
         //Members
         public:

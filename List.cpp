@@ -2,9 +2,9 @@
 #include "List.h"
 #include <iostream>
 
-using namespace AtUtility;
+using namespace sdlUtility;
 
-namespace AtGLui {
+namespace sdlGUI {
     void List::AddItem(Element *ListItem) {
         Items += 1;
         ListItems.push_back(ListItem);
@@ -221,22 +221,22 @@ namespace AtGLui {
     void List::SetSelectedItem(Element *ListItem) {
         if (SelectedItem != ListItem) {
             if (SelectedItem) {
-                SelectedItem->PushEvent(AtObjects::Events::MouseOut);
-                AtObjects::Renderable *Renderable = SelectedItem->GetRenderable();
-                Renderable->SetColor(AtObjects::Color::Idle);
+                SelectedItem->PushEvent(sdlObjects::Events::MouseOut);
+                sdlObjects::Renderable *Renderable = SelectedItem->GetRenderable();
+                Renderable->SetColor(sdlObjects::Color::Idle);
             }
 
             SelectedItem = ListItem;
 
-            EventQueue.push_back(AtObjects::Events::ValueChange);
+            EventQueue.push_back(sdlObjects::Events::ValueChange);
             OnValueChange();
 
             if (ListItem) {
                 Value = SelectedItem->GetValue();
 
-                AtObjects::Renderable *Renderable = ListItem->GetRenderable();
+                sdlObjects::Renderable *Renderable = ListItem->GetRenderable();
                 if (Renderable) {
-                    Renderable->SetColor(AtObjects::Color::Hovered);
+                    Renderable->SetColor(sdlObjects::Color::Hovered);
                 }
             } else Value = "";
         }

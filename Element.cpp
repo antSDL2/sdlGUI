@@ -3,9 +3,9 @@
 #include <iostream>
 #include <math.h>
 
-using namespace AtUtility;
+using namespace sdlUtility;
 
-namespace AtGLui {
+namespace sdlGUI {
     void Element::AddPadding(float X, float Y) {
         Padding = Vector2(X, Y);
     }
@@ -58,7 +58,7 @@ namespace AtGLui {
             if (InheritedHeight) InheritedHeight -= OffsetY+2.f*Parent->PaddingY();
             if (Scaled) Parent->EnableScaling(false);
         } else {
-            AtObjects::Texture *Texture = Renderable.GetTexture();
+            sdlObjects::Texture *Texture = Renderable.GetTexture();
             if (Texture) {
                 InheritedHeight = Scale*Texture->GetHeight();
             }
@@ -79,7 +79,7 @@ namespace AtGLui {
             if (InheritedWidth) InheritedWidth -= OffsetX+2.f*Parent->PaddingX();
             if (Scaled) Parent->EnableScaling(false);
         } else {
-            AtObjects::Texture *Texture = Renderable.GetTexture();
+            sdlObjects::Texture *Texture = Renderable.GetTexture();
             if (Texture) {
                 InheritedWidth = Scale*Texture->GetWidth();
             }
@@ -112,7 +112,7 @@ namespace AtGLui {
         if (!Disabled) {
             if (Renderable.GetTile() == 1) Renderable.SetTile(2);
 
-            if (IsHovered()) Renderable.SetColor(AtObjects::Color::Hovered);
+            if (IsHovered()) Renderable.SetColor(sdlObjects::Color::Hovered);
         }
     }
 
@@ -120,7 +120,7 @@ namespace AtGLui {
         if (!Disabled) {
             if (Renderable.GetTile() != 1) Renderable.SetTile(1);
 
-            if (!IsHovered()) Renderable.SetColor(AtObjects::Color::Idle);
+            if (!IsHovered()) Renderable.SetColor(sdlObjects::Color::Idle);
         }
     }
 
@@ -164,10 +164,10 @@ namespace AtGLui {
         if (Disabled && !this->Disabled) {
             ResetInput();
             Renderable.SetTile(4);
-            Renderable.SetColor(AtObjects::Color::Disabled);
+            Renderable.SetColor(sdlObjects::Color::Disabled);
         } else if (!Disabled && this->Disabled) {
             Renderable.SetTile(1);
-            Renderable.SetColor(AtObjects::Color::Idle);
+            Renderable.SetColor(sdlObjects::Color::Idle);
         }
 
         this->Disabled = Disabled;
