@@ -1,4 +1,4 @@
-# AtGLui
+# sdlGUI
 
 An OpenGL UI toolkit with a Lua API written in C++. 
 
@@ -8,15 +8,15 @@ This UI toolkit was developed for a 2D game engine. User interface structures ar
 To compile the source code, it is recommended to use the Code::Blocks project included in this repository. This library has only been tested in Windows environments. 
 
 ## Dependencies
-- [AtObjects](https://github.com/atrapalis/AtObjects "AtObjects GitHub repository")
-- [AtUtility](https://github.com/atrapalis/AtUtility "AtUtility GitHub repository")
-- [AtXml](https://github.com/atrapalis/AtXml "AtXml GitHub repository")
+- [sdlObjects](https://github.com/antSDL2/sdlObjects)
+- [sdlUtility](https://github.com/antSDL2/sdlUtility)
+- [antXml](https://github.com/atrapalis/antXml)
 - Lua 5.2 binding library (lua52)
 - OpenGL 3.2 (glu32, opengl32)
 - SDL2 base (SDL2)
 
 ## Documentation
-Documentation can be found in the [GitHub pages](https://atrapalis.github.io/AtGLui/) for this project.
+Documentation can be found in the [GitHub pages](https://antSDL2.github.io/sdlGUI/) for this project.
 
 ## Example
 
@@ -59,4 +59,4 @@ function Framerate.Message:OnProcess()
 	end
 end
 ```
-**Note:** The API call "Application:GetFramerate();" is part of the [AtApp](https://github.com/atrapalis/AtApp) library API.
+**Note:** The API call "Application:GetFramerate();" is part of the [sdlApp](https://github.com/antSDL2/sdlApp) library API.
